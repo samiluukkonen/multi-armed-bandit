@@ -7,6 +7,7 @@ const NR_ARMS = 5
 
 const App: React.FC = () => {
   const [environment, setEnvironment] = useState<Environment>()
+  const [epsilon, setEpsilon] = useState<number>(0.1)
   const [summary, setSummary] = useState<LearningSummary>()
   const [rewardProbabilities, setRewardProbabilities] = useState<number[]>(
     Array.from({ length: NR_ARMS }, (): number => 0.2)
@@ -19,7 +20,7 @@ const App: React.FC = () => {
     if (environment) {
       const epsilonGreedyAgent = createAgent({
         environment,
-        epsilon: 0.1,
+        epsilon,
         iterations: 1000,
       })
 
@@ -59,6 +60,10 @@ const App: React.FC = () => {
     const env = createEnvironment(rewardProbabilities, rewards)
 
     setEnvironment(env)
+  }
+
+  const handleChangeEpsilon = (event: ChangeEvent<HTMLInputElement>) => {
+    setEpsilon(Number(event.target.value))
   }
 
   return (
@@ -109,6 +114,22 @@ const App: React.FC = () => {
             </div>
           )
         })}
+      </div>
+      <div className="epsilon-input-container">
+        <label htmlFor={`epsilon-input`}>
+          Epsilon value. The percentage we explore new arms.
+        </label>
+        <input
+          className="epsilon-input"
+          id={`epsilon-input`}
+          max={1.0}
+          min={0.0}
+          onChange={handleChangeEpsilon}
+          step={0.1}
+          type="range"
+          value={epsilon}
+        />
+        <span className="reward-input-value">{epsilon * 100}%</span>
       </div>
       <button onClick={handleClickLearn}>Learn</button>
       {summary && (

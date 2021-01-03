@@ -31,6 +31,13 @@
   margin: 0 0 16px 0;
 }
 
+.epsilon-input-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .summary {
   align-items: center;
   display: flex;
