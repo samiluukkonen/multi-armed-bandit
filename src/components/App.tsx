@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from 'react'
+import React, { ChangeEvent, useCallback, useEffect, useState } from 'react'
 import { createAgent } from '../agent'
 import { createEnvironment } from '../environment'
 import './App.css'
@@ -38,29 +38,29 @@ const App: React.FC = () => {
     }
   }, [environment])
 
-  const handleChangeReward = (
-    event: ChangeEvent<HTMLInputElement>,
-    arm: number
-  ): void => {
-    const value = parseInt(event.target.value)
+  const handleChangeReward = useCallback(
+    (event: ChangeEvent<HTMLInputElement>, arm: number): void => {
+      const value = parseInt(event.target.value)
 
-    const newRewards = [...rewards]
-    newRewards[arm] = value
+      const newRewards = [...rewards]
+      newRewards[arm] = value
 
-    setRewards(newRewards)
-  }
+      setRewards(newRewards)
+    },
+    [rewards]
+  )
 
-  const handleChangeProbability = (
-    event: ChangeEvent<HTMLInputElement>,
-    arm: number
-  ): void => {
-    const newProbabilities = [...rewardProbabilities]
-    newProbabilities[arm] = Number(event.target.value)
+  const handleChangeProbability = useCallback(
+    (event: ChangeEvent<HTMLInputElement>, arm: number): void => {
+      const newProbabilities = [...rewardProbabilities]
+      newProbabilities[arm] = Number(event.target.value)
 
-    setRewardProbabilities(newProbabilities)
-  }
+      setRewardProbabilities(newProbabilities)
+    },
+    [rewardProbabilities]
+  )
 
-  const handleClickLearn = () => {
+  const handleClickLearn = useCallback(() => {
     console.log(rewards)
 
     setIsDisabled(true)
@@ -70,11 +70,14 @@ const App: React.FC = () => {
     const env = createEnvironment(rewardProbabilities, rewards)
 
     setEnvironment(env)
-  }
+  }, [rewardProbabilities, rewards])
 
-  const handleChangeEpsilon = (event: ChangeEvent<HTMLInputElement>) => {
-    setEpsilon(Number(event.target.value))
-  }
+  const handleChangeEpsilon = useCallback(
+    (event: ChangeEvent<HTMLInputElement>) => {
+      setEpsilon(Number(event.target.value))
+    },
+    []
+  )
 
   return (
     <div className="content">
