@@ -2,8 +2,8 @@ import React, { ChangeEvent, useEffect, useState } from 'react'
 import { createAgent } from '../agent'
 import { createEnvironment } from '../environment'
 import './App.css'
-import Probability from './Probability'
-import Reward from './Reward'
+import ProbabilityInput from './ProbabilityInput'
+import RewardInput from './RewardInput'
 
 const NR_ARMS = 5
 
@@ -81,13 +81,13 @@ const App: React.FC = () => {
               className="reward-input-container"
               key={`reward-input-container-${arm}`}
             >
-              <Reward
+              <RewardInput
                 arm={arm}
                 onChange={handleChangeReward}
                 value={rewards[arm]}
               />
 
-              <Probability
+              <ProbabilityInput
                 arm={arm}
                 onChange={handleChangeProbability}
                 value={rewardProbabilities[arm]}

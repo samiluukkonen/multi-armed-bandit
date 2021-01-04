@@ -6,7 +6,7 @@ interface ProbabilityProps {
   value: number
 }
 
-const Probability: FC<ProbabilityProps> = ({ arm, onChange, value }) => {
+const ProbabilityInput: FC<ProbabilityProps> = ({ arm, onChange, value }) => {
   return (
     <>
       <label htmlFor={`reward-probability-${arm}`}>Reward probability</label>
@@ -26,4 +26,4 @@ const Probability: FC<ProbabilityProps> = ({ arm, onChange, value }) => {
   )
 }
 
-export default Probability
+export default ProbabilityInput

@@ -6,7 +6,7 @@ interface RewardProps {
   value: number
 }
 
-const Reward: FC<RewardProps> = ({ arm, onChange, value }) => {
+const RewardInput: FC<RewardProps> = ({ arm, onChange, value }) => {
   return (
     <>
       <label htmlFor={`reward-input-${arm}`}>Arm {arm} reward value</label>
@@ -27,4 +27,4 @@ const Reward: FC<RewardProps> = ({ arm, onChange, value }) => {
   )
 }
 
-export default Reward
+export default RewardInput
