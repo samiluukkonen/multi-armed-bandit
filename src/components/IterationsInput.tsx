@@ -10,7 +10,7 @@ const IterationsInput: FC<IterationsInputProps> = ({ onChange, value }) => {
     <div className="iterations-input-container">
       <div className="iterations-input-container">
         <label htmlFor={`iterations-input`}>
-          Iterations.
+          Iterations
           <p>How many times we want to try to learn things.</p>
         </label>
         <input

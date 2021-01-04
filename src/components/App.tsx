@@ -41,7 +41,7 @@ const App: React.FC = () => {
 
       console.log(environment, epsilonGreedyAgent.act())
     }
-  }, [environment, decay, epsilon, iterations])
+  }, [environment])
 
   const handleChangeReward = useCallback(
     (event: ChangeEvent<HTMLInputElement>, arm: number): void => {

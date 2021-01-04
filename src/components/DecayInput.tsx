@@ -10,7 +10,7 @@ const DecyaInput: FC<DecayInputProps> = ({ onChange, value }) => {
     <div className="decay-input-container">
       <div className="decay-input-container">
         <label htmlFor={`decay-input`}>
-          Decay value.
+          Decay
           <p>The rate we reduce epsilon value over time.</p>
         </label>
         <input
