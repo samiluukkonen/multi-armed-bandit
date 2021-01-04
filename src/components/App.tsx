@@ -129,6 +129,17 @@ const App: React.FC = () => {
     setStrategy(value)
   }, [])
 
+  const resolveStrategyDescription = (): string => {
+    switch (strategy) {
+      case 'epsilon-greedy':
+        return 'The best arm is selected for a proportion 1 - &epsilon; of the trials, and a arm is selected at random for a proportion &epsilon;. A typical parameter value might be &epsilon; = 0.1'
+      case 'epsilon-decreasing':
+        return 'Similar to the epsilon-greedy strategy, except that the value of &epsilon; decreases as the experiment progresses, resulting in highly explorative behaviour at the start and highly exploitative behaviour at the finish.'
+      default:
+        return ''
+    }
+  }
+
   const isEpsilonGreedy = strategy === 'epsilon-greedy'
   const isEpsilonDecreasing = strategy === 'epsilon-decreasing'
 
@@ -213,6 +224,10 @@ const App: React.FC = () => {
           </div>
         </div>
       </div>
+      <div
+        className="strategy-description"
+        dangerouslySetInnerHTML={{ __html: resolveStrategyDescription() }}
+      ></div>
       <button
         className="learn"
         disabled={isDisabled}

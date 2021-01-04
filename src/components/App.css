@@ -122,6 +122,11 @@ label > p {
   font-weight: 600;
 }
 
+.strategy-description {
+  text-align: justify;
+  width: 600px;
+}
+
 .summary {
   align-items: center;
   display: flex;
