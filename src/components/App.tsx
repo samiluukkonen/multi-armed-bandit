@@ -2,6 +2,7 @@ import React, { ChangeEvent, useEffect, useState } from 'react'
 import { createAgent } from '../agent'
 import { createEnvironment } from '../environment'
 import './App.css'
+import Probability from './Probability'
 import Reward from './Reward'
 
 const NR_ARMS = 5
@@ -86,21 +87,11 @@ const App: React.FC = () => {
                 value={rewards[arm]}
               />
 
-              <label htmlFor={`reward-probability-${arm}`}>
-                Reward probability
-              </label>
-              <input
-                defaultValue={rewardProbabilities[arm]}
-                id={`reward-probability-${arm}`}
-                max={1.0}
-                min={0.0}
-                onChange={(event: ChangeEvent<HTMLInputElement>): void =>
-                  handleChangeProbability(event, arm)
-                }
-                step={0.1}
-                type="range"
+              <Probability
+                arm={arm}
+                onChange={handleChangeProbability}
+                value={rewardProbabilities[arm]}
               />
-              <span>{rewardProbabilities[arm] * 100}%</span>
             </div>
           )
         })}
