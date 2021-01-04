@@ -101,8 +101,10 @@ const App: React.FC = () => {
   return (
     <div className="content">
       <h1>Multi-armed bandit</h1>
-      <p className="reward-instructions">
-        Give every arm a reward of value [0 - 9]
+      <p className="description">
+        The arms provide rewards from a probability distribution. The objective
+        of the agent is to maximize the sum of rewards earned through
+        iterations.
       </p>
       <div className="arm-inputs">
         {Array.from({ length: NR_ARMS }).map((_, arm: number) => {
