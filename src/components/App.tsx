@@ -15,7 +15,8 @@ const NR_ARMS = 5
 const App: React.FC = () => {
   const [decay, setDecay] = useState<number>(0.0)
   const [environment, setEnvironment] = useState<Environment>()
-  const [epsilon, setEpsilon] = useState<number>(0.1)
+  const [epsilonGreedy, setEpsilonGreedy] = useState<number>(0.1)
+  const [epsilonDecreasing, setEpsilonDecreasing] = useState<number>(0.1)
   const [isDisabled, setIsDisabled] = useState<boolean>(false)
   const [iterations, setIterations] = useState<number>(1000)
   const [rewardProbabilities, setRewardProbabilities] = useState<number[]>(
@@ -29,6 +30,8 @@ const App: React.FC = () => {
 
   useEffect(() => {
     if (environment) {
+      const epsilon = resolveEpsilon()
+
       const epsilonGreedyAgent = createAgent({
         decay,
         environment,
@@ -44,6 +47,28 @@ const App: React.FC = () => {
       console.log(environment, epsilonGreedyAgent.act())
     }
   }, [environment])
+
+  const resolveEpsilon = (): number => {
+    switch (strategy) {
+      case 'epsilon-greedy':
+        return epsilonGreedy
+      case 'epsilon-decreasing':
+        return epsilonDecreasing
+      default:
+        return 0
+    }
+  }
+
+  const resolveUpdateEpsilon = (value: number): void => {
+    switch (strategy) {
+      case 'epsilon-greedy':
+        setEpsilonGreedy(value)
+        break
+      case 'epsilon-decreasing':
+        setEpsilonDecreasing(value)
+        break
+    }
+  }
 
   const handleChangeReward = useCallback(
     (event: ChangeEvent<HTMLInputElement>, arm: number): void => {
@@ -88,9 +113,9 @@ const App: React.FC = () => {
 
   const handleChangeEpsilon = useCallback(
     (event: ChangeEvent<HTMLInputElement>): void => {
-      setEpsilon(Number(event.target.value))
+      resolveUpdateEpsilon(Number(event.target.value))
     },
-    []
+    [strategy]
   )
 
   const handleChangeDecay = useCallback(
@@ -162,8 +187,8 @@ const App: React.FC = () => {
           <div className="strategy-settings">
             <EpsilonInput
               disabled={strategy !== 'epsilon-greedy'}
-              onChange={isEpsilonGreedy ? handleChangeEpsilon : undefined}
-              value={epsilon}
+              onChange={handleChangeEpsilon}
+              value={epsilonGreedy}
             />
           </div>
         </div>
@@ -177,8 +202,8 @@ const App: React.FC = () => {
           <div className="strategy-settings">
             <EpsilonInput
               disabled={strategy !== 'epsilon-decreasing'}
-              onChange={isEpsilonDecreasing ? handleChangeEpsilon : undefined}
-              value={epsilon}
+              onChange={handleChangeEpsilon}
+              value={epsilonDecreasing}
             />
             <DecayInput
               disabled={strategy !== 'epsilon-decreasing'}
