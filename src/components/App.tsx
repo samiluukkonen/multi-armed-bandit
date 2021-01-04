@@ -12,13 +12,14 @@ const NR_ARMS = 5
 const App: React.FC = () => {
   const [environment, setEnvironment] = useState<Environment>()
   const [epsilon, setEpsilon] = useState<number>(0.1)
-  const [summary, setSummary] = useState<LearningSummary>()
+  const [isDisabled, setIsDisabled] = useState<boolean>(false)
   const [rewardProbabilities, setRewardProbabilities] = useState<number[]>(
     Array.from({ length: NR_ARMS }, (): number => 0.2)
   )
   const [rewards, setRewards] = useState<number[]>(
     Array.from({ length: NR_ARMS }, (_, n): number => n)
   )
+  const [summary, setSummary] = useState<LearningSummary>()
 
   useEffect(() => {
     if (environment) {
@@ -31,6 +32,7 @@ const App: React.FC = () => {
       const learningSummary = epsilonGreedyAgent.act()
 
       setSummary(learningSummary)
+      setIsDisabled(false)
 
       console.log(environment, epsilonGreedyAgent.act())
     }
@@ -60,6 +62,10 @@ const App: React.FC = () => {
 
   const handleClickLearn = () => {
     console.log(rewards)
+
+    setIsDisabled(true)
+    setSummary(undefined)
+    setEnvironment(undefined)
 
     const env = createEnvironment(rewardProbabilities, rewards)
 
@@ -99,7 +105,9 @@ const App: React.FC = () => {
         })}
       </div>
       <EpsilonInput onChange={handleChangeEpsilon} value={epsilon} />
-      <button onClick={handleClickLearn}>Learn</button>
+      <button disabled={isDisabled} onClick={handleClickLearn}>
+        Learn
+      </button>
       {summary && <Summary summary={summary} />}
     </div>
   )
