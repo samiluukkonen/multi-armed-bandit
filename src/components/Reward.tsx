@@ -1,12 +1,12 @@
-import React, { ChangeEvent } from 'react'
+import React, { ChangeEvent, FC } from 'react'
 
 interface RewardProps {
   arm: number
-  onChange: (event: React.ChangeEvent<HTMLInputElement>, arm: number) => void
+  onChange: (event: ChangeEvent<HTMLInputElement>, arm: number) => void
   value: number
 }
 
-const Reward: React.FC<RewardProps> = ({ arm, onChange, value }) => {
+const Reward: FC<RewardProps> = ({ arm, onChange, value }) => {
   return (
     <>
       <label htmlFor={`reward-input-${arm}`}>Arm {arm} reward value</label>
