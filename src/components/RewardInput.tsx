@@ -1,18 +1,18 @@
 import React, { ChangeEvent, FC } from 'react'
 
-interface RewardProps {
+interface RewardInputProps {
   arm: number
   onChange: (event: ChangeEvent<HTMLInputElement>, arm: number) => void
   value: number
 }
 
-const RewardInput: FC<RewardProps> = ({ arm, onChange, value }) => {
+const RewardInput: FC<RewardInputProps> = ({ arm, onChange, value }) => {
   return (
     <>
-      <label htmlFor={`reward-input-${arm}`}>Arm {arm} reward value</label>
+      <label htmlFor={`arm-input-reward-${arm}`}>Arm {arm} reward value</label>
       <input
-        className="reward-input"
-        id={`reward-input-${arm}`}
+        className="arm-input-reward"
+        id={`arm-input-reward-${arm}`}
         max={9}
         min={0}
         onChange={(event: ChangeEvent<HTMLInputElement>) =>
@@ -22,7 +22,7 @@ const RewardInput: FC<RewardProps> = ({ arm, onChange, value }) => {
         type="range"
         value={value}
       />
-      <span className="reward-input-value">{value}</span>
+      <span className="arm-input-reward-value">{value}</span>
     </>
   )
 }

@@ -1,18 +1,22 @@
 import React, { ChangeEvent, FC } from 'react'
 
-interface ProbabilityProps {
+interface ProbabilityInputProps {
   arm: number
-  onChange: (event: React.ChangeEvent<HTMLInputElement>, arm: number) => void
+  onChange: (event: ChangeEvent<HTMLInputElement>, arm: number) => void
   value: number
 }
 
-const ProbabilityInput: FC<ProbabilityProps> = ({ arm, onChange, value }) => {
+const ProbabilityInput: FC<ProbabilityInputProps> = ({
+  arm,
+  onChange,
+  value,
+}) => {
   return (
     <>
-      <label htmlFor={`reward-probability-${arm}`}>Reward probability</label>
+      <label htmlFor={`arm-input-probability-${arm}`}>Reward probability</label>
       <input
         defaultValue={value}
-        id={`reward-probability-${arm}`}
+        id={`arm-input-probability-${arm}`}
         max={1.0}
         min={0.0}
         onChange={(event: ChangeEvent<HTMLInputElement>): void =>

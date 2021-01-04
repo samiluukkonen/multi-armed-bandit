@@ -5,13 +5,13 @@
   align-items: center;
 }
 
-.reward-inputs {
+.arm-inputs {
   display: flex;
   flex-direction: row;
   margin: 8px;
 }
 
-.reward-input-container {
+.arm-input-container {
   align-items: center;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -22,12 +22,12 @@
   margin: 8px;
 }
 
-.reward-input {
+.arm-input-reward {
   padding: 8px;
   text-align: center;
 }
 
-.reward-input-value {
+.arm-input-reward-value {
   margin: 0 0 16px 0;
 }
 

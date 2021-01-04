@@ -2,6 +2,7 @@ import React, { ChangeEvent, useEffect, useState } from 'react'
 import { createAgent } from '../agent'
 import { createEnvironment } from '../environment'
 import './App.css'
+import EpsilonInput from './EpsilonInput'
 import ProbabilityInput from './ProbabilityInput'
 import RewardInput from './RewardInput'
 
@@ -74,12 +75,12 @@ const App: React.FC = () => {
       <p className="reward-instructions">
         Give every arm a reward of value [0 - 9]
       </p>
-      <div className="reward-inputs">
+      <div className="arm-inputs">
         {Array.from({ length: NR_ARMS }).map((_, arm: number) => {
           return (
             <div
-              className="reward-input-container"
-              key={`reward-input-container-${arm}`}
+              className="arm-input-container"
+              key={`arm-input-container-${arm}`}
             >
               <RewardInput
                 arm={arm}
@@ -96,22 +97,7 @@ const App: React.FC = () => {
           )
         })}
       </div>
-      <div className="epsilon-input-container">
-        <label htmlFor={`epsilon-input`}>
-          Epsilon value. The percentage we explore new arms.
-        </label>
-        <input
-          className="epsilon-input"
-          id={`epsilon-input`}
-          max={1.0}
-          min={0.0}
-          onChange={handleChangeEpsilon}
-          step={0.1}
-          type="range"
-          value={epsilon}
-        />
-        <span className="reward-input-value">{epsilon * 100}%</span>
-      </div>
+      <EpsilonInput onChange={handleChangeEpsilon} value={epsilon} />
       <button onClick={handleClickLearn}>Learn</button>
       {summary && (
         <div className="summary">
