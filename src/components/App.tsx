@@ -1,3 +1,4 @@
+import classNames from 'classnames'
 import React, { ChangeEvent, useCallback, useEffect, useState } from 'react'
 import { createAgent } from '../agent'
 import { createEnvironment } from '../environment'
@@ -23,6 +24,7 @@ const App: React.FC = () => {
   const [rewards, setRewards] = useState<number[]>(
     Array.from({ length: NR_ARMS }, (_, n): number => n)
   )
+  const [strategy, setStrategy] = useState<string>('epsilon-greedy')
   const [summary, setSummary] = useState<LearningSummary>()
 
   useEffect(() => {
@@ -65,7 +67,7 @@ const App: React.FC = () => {
     [rewardProbabilities]
   )
 
-  const handleClickLearn = useCallback(() => {
+  const handleClickLearn = useCallback((): void => {
     console.log(rewards)
 
     setIsDisabled(true)
@@ -78,25 +80,32 @@ const App: React.FC = () => {
   }, [rewardProbabilities, rewards])
 
   const handleChangeIterations = useCallback(
-    (event: ChangeEvent<HTMLInputElement>) => {
+    (event: ChangeEvent<HTMLInputElement>): void => {
       setIterations(Number(event.target.value))
     },
     []
   )
 
   const handleChangeEpsilon = useCallback(
-    (event: ChangeEvent<HTMLInputElement>) => {
+    (event: ChangeEvent<HTMLInputElement>): void => {
       setEpsilon(Number(event.target.value))
     },
     []
   )
 
   const handleChangeDecay = useCallback(
-    (event: ChangeEvent<HTMLInputElement>) => {
+    (event: ChangeEvent<HTMLInputElement>): void => {
       setDecay(Number(event.target.value))
     },
     []
   )
+
+  const handleClickStrategy = useCallback((value: string): void => {
+    setStrategy(value)
+  }, [])
+
+  const isEpsilonGreedy = strategy === 'epsilon-greedy'
+  const isEpsilonDecreasing = strategy === 'epsilon-decreasing'
 
   return (
     <div className="content">
@@ -143,17 +152,39 @@ const App: React.FC = () => {
         Strategies
       </label>
       <div className="strategies-container" id="strategies-container">
-        <div className="strategy epsilon-greey">
+        <div
+          className={classNames('strategy epsilon-greedy', {
+            active: isEpsilonGreedy,
+          })}
+          onClick={() => handleClickStrategy('epsilon-greedy')}
+        >
           <div className="name">&epsilon;-greedy</div>
           <div className="strategy-settings">
-            <EpsilonInput onChange={handleChangeEpsilon} value={epsilon} />
+            <EpsilonInput
+              disabled={strategy !== 'epsilon-greedy'}
+              onChange={isEpsilonGreedy ? handleChangeEpsilon : undefined}
+              value={epsilon}
+            />
           </div>
         </div>
-        <div className="strategy epsilon-decreasing">
+        <div
+          className={classNames('strategy epsilon-decreasing', {
+            active: isEpsilonDecreasing,
+          })}
+          onClick={() => handleClickStrategy('epsilon-decreasing')}
+        >
           <div className="name">&epsilon;-decreasing</div>
           <div className="strategy-settings">
-            <EpsilonInput onChange={handleChangeEpsilon} value={epsilon} />
-            <DecayInput onChange={handleChangeDecay} value={decay} />
+            <EpsilonInput
+              disabled={strategy !== 'epsilon-decreasing'}
+              onChange={isEpsilonDecreasing ? handleChangeEpsilon : undefined}
+              value={epsilon}
+            />
+            <DecayInput
+              disabled={strategy !== 'epsilon-decreasing'}
+              onChange={handleChangeDecay}
+              value={decay}
+            />
           </div>
         </div>
       </div>

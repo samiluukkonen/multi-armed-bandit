@@ -1,11 +1,12 @@
 import React, { ChangeEvent, FC } from 'react'
 
 interface DecayInputProps {
+  disabled?: boolean
   onChange: (event: ChangeEvent<HTMLInputElement>) => void
   value: number
 }
 
-const DecyaInput: FC<DecayInputProps> = ({ onChange, value }) => {
+const DecyaInput: FC<DecayInputProps> = ({ disabled, onChange, value }) => {
   return (
     <div className="decay-input-container">
       <div className="decay-input-container">
@@ -15,6 +16,7 @@ const DecyaInput: FC<DecayInputProps> = ({ onChange, value }) => {
         </label>
         <input
           className="decay-input"
+          disabled={!!disabled}
           id={`decay-input`}
           max={1.0}
           min={0.0}

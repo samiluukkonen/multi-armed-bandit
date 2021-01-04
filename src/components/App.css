@@ -99,6 +99,7 @@ label > p {
 
 .strategy {
   align-items: center;
+  background-color: #eee;
   border-radius: 5px;
   border: 1px solid #ccc;
   display: flex;
@@ -106,6 +107,15 @@ label > p {
   justify-content: flex-start;
   margin: 8px 8px 16px 8px;
   padding: 16px;
+}
+
+.strategy:hover {
+  border: 1px solid #07c;
+}
+
+.strategy.active {
+  background-color: #fff;
+  border: 1px solid #07c;
 }
 
 .strategy > .name {

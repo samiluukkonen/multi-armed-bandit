@@ -1,11 +1,12 @@
 import React, { ChangeEvent, FC } from 'react'
 
 interface EpsilonInputProps {
-  onChange: (event: ChangeEvent<HTMLInputElement>) => void
+  disabled?: boolean
+  onChange?: (event: ChangeEvent<HTMLInputElement>) => void
   value: number
 }
 
-const EpsilonInput: FC<EpsilonInputProps> = ({ onChange, value }) => {
+const EpsilonInput: FC<EpsilonInputProps> = ({ disabled, onChange, value }) => {
   return (
     <div className="epsilon-input-container">
       <div className="epsilon-input-container">
@@ -15,6 +16,7 @@ const EpsilonInput: FC<EpsilonInputProps> = ({ onChange, value }) => {
         </label>
         <input
           className="epsilon-input"
+          disabled={!!disabled}
           id={`epsilon-input`}
           max={1.0}
           min={0.0}
