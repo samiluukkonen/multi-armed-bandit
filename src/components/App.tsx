@@ -108,19 +108,25 @@ const App: React.FC = () => {
         {Array.from({ length: NR_ARMS }).map((_, arm: number) => {
           return (
             <div
-              className="arm-input-container"
-              key={`arm-input-container-${arm}`}
+              className="arm-input-with-label"
+              key={`arm-input-with-label--${arm}`}
             >
-              <RewardInput
-                arm={arm}
-                onChange={handleChangeReward}
-                value={rewards[arm]}
-              />
-              <ProbabilityInput
-                arm={arm}
-                onChange={handleChangeProbability}
-                value={rewardProbabilities[arm]}
-              />
+              <label htmlFor={`arm-input-container-${arm}`}>Arm {arm}</label>
+              <div
+                className="arm-input-container"
+                id={`arm-input-container-${arm}`}
+              >
+                <RewardInput
+                  arm={arm}
+                  onChange={handleChangeReward}
+                  value={rewards[arm]}
+                />
+                <ProbabilityInput
+                  arm={arm}
+                  onChange={handleChangeProbability}
+                  value={rewardProbabilities[arm]}
+                />
+              </div>
             </div>
           )
         })}

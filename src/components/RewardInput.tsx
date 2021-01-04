@@ -9,7 +9,7 @@ interface RewardInputProps {
 const RewardInput: FC<RewardInputProps> = ({ arm, onChange, value }) => {
   return (
     <>
-      <label htmlFor={`arm-input-reward-${arm}`}>Arm {arm} reward value</label>
+      <label htmlFor={`arm-input-reward-${arm}`}>Reward value</label>
       <input
         className="arm-input-reward"
         id={`arm-input-reward-${arm}`}
