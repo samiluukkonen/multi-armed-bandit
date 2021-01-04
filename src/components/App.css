@@ -31,12 +31,22 @@
   margin: 0 0 16px 0;
 }
 
+.settings-container {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 16px;
+}
+
 .decay-input-container,
 .epsilon-input-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.epsilon-input-container {
+  margin: 0 0 8px 0;
 }
 
 .decay-input {

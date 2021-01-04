@@ -116,8 +116,10 @@ const App: React.FC = () => {
           )
         })}
       </div>
-      <EpsilonInput onChange={handleChangeEpsilon} value={epsilon} />
-      <DecayInput onChange={handleChangeDecay} value={decay} />
+      <div className="settings-container">
+        <EpsilonInput onChange={handleChangeEpsilon} value={epsilon} />
+        <DecayInput onChange={handleChangeDecay} value={decay} />
+      </div>
       <button
         className="learn"
         disabled={isDisabled}
