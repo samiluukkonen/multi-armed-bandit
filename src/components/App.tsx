@@ -5,6 +5,7 @@ import './App.css'
 import EpsilonInput from './EpsilonInput'
 import ProbabilityInput from './ProbabilityInput'
 import RewardInput from './RewardInput'
+import Summary from './Summary'
 
 const NR_ARMS = 5
 
@@ -99,18 +100,7 @@ const App: React.FC = () => {
       </div>
       <EpsilonInput onChange={handleChangeEpsilon} value={epsilon} />
       <button onClick={handleClickLearn}>Learn</button>
-      {summary && (
-        <div className="summary">
-          <span>How many times each arm was triggered</span>
-          <div className="arm-counts">
-            {summary.arm.counts.map((count: number, arm: number) => (
-              <div className="arm-count" key={`arm-count-${arm}`}>
-                <span className="arm-count-title">Arm {arm}</span>: {count}
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
+      {summary && <Summary summary={summary} />}
     </div>
   )
 }
