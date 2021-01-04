@@ -8,18 +8,6 @@ interface Environment {
   rewards: number[]
 }
 
-interface AgentProps {
-  decay?: number
-  decayInterval?: number
-  environment: Environment
-  epsilon: number
-  iterations: number
-}
-
-interface Agent extends AgentProps {
-  act: () => LearningSummary
-}
-
 interface Arm {
   counts: number[]
   rewards: number[]

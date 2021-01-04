@@ -1,5 +1,17 @@
 import { argMax, randomChoice } from './utils'
 
+interface AgentProps {
+  decay?: number
+  decayInterval?: number
+  environment: Environment
+  epsilon: number
+  iterations: number
+}
+
+interface Agent extends AgentProps {
+  act: () => LearningSummary
+}
+
 export const createAgent = ({
   decay,
   decayInterval,

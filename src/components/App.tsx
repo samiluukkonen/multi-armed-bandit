@@ -1,7 +1,8 @@
 import React, { ChangeEvent, useEffect, useState } from 'react'
-import { createAgent } from './agent'
+import { createAgent } from '../agent'
+import { createEnvironment } from '../environment'
 import './App.css'
-import { createEnvironment } from './environment'
+import Reward from './Reward'
 
 const NR_ARMS = 5
 
@@ -79,22 +80,11 @@ const App: React.FC = () => {
               className="reward-input-container"
               key={`reward-input-container-${arm}`}
             >
-              <label htmlFor={`reward-input-${arm}`}>
-                Arm {arm} reward value
-              </label>
-              <input
-                className="reward-input"
-                id={`reward-input-${arm}`}
-                max={9}
-                min={0}
-                onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                  handleChangeReward(event, arm)
-                }
-                step={1}
-                type="range"
+              <Reward
+                arm={arm}
+                onChange={handleChangeReward}
                 value={rewards[arm]}
               />
-              <span className="reward-input-value">{rewards[arm]}</span>
 
               <label htmlFor={`reward-probability-${arm}`}>
                 Reward probability
