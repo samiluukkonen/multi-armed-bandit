@@ -1,4 +1,5 @@
 import React, { FC } from 'react'
+import { sum } from '../utils'
 
 interface SummaryProps {
   summary: LearningSummary
@@ -14,6 +15,9 @@ const Summary: FC<SummaryProps> = ({ summary }) => {
             <span className="arm-count-title">Arm {arm}</span>: {count}
           </div>
         ))}
+      </div>
+      <div className="total-reward">
+        Total reward: {sum(summary.arm.rewards)}
       </div>
     </div>
   )
