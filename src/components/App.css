@@ -31,11 +31,16 @@
   margin: 0 0 16px 0;
 }
 
+.decay-input-container,
 .epsilon-input-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.decay-input {
+  width: 200px;
 }
 
 .summary {
@@ -57,4 +62,8 @@
 
 .arm-count-title {
   font-weight: 800;
+}
+
+.learn {
+  margin: 16px;
 }

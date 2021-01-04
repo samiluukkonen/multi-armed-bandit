@@ -2,6 +2,7 @@ import React, { ChangeEvent, useCallback, useEffect, useState } from 'react'
 import { createAgent } from '../agent'
 import { createEnvironment } from '../environment'
 import './App.css'
+import DecayInput from './DecayInput'
 import EpsilonInput from './EpsilonInput'
 import ProbabilityInput from './ProbabilityInput'
 import RewardInput from './RewardInput'
@@ -10,6 +11,7 @@ import Summary from './Summary'
 const NR_ARMS = 5
 
 const App: React.FC = () => {
+  const [decay, setDecay] = useState<number>(0.0)
   const [environment, setEnvironment] = useState<Environment>()
   const [epsilon, setEpsilon] = useState<number>(0.1)
   const [isDisabled, setIsDisabled] = useState<boolean>(false)
@@ -24,6 +26,7 @@ const App: React.FC = () => {
   useEffect(() => {
     if (environment) {
       const epsilonGreedyAgent = createAgent({
+        decay,
         environment,
         epsilon,
         iterations: 1000,
@@ -79,6 +82,13 @@ const App: React.FC = () => {
     []
   )
 
+  const handleChangeDecay = useCallback(
+    (event: ChangeEvent<HTMLInputElement>) => {
+      setDecay(Number(event.target.value))
+    },
+    []
+  )
+
   return (
     <div className="content">
       <h1>Multi-armed bandit</h1>
@@ -97,7 +107,6 @@ const App: React.FC = () => {
                 onChange={handleChangeReward}
                 value={rewards[arm]}
               />
-
               <ProbabilityInput
                 arm={arm}
                 onChange={handleChangeProbability}
@@ -108,7 +117,12 @@ const App: React.FC = () => {
         })}
       </div>
       <EpsilonInput onChange={handleChangeEpsilon} value={epsilon} />
-      <button disabled={isDisabled} onClick={handleClickLearn}>
+      <DecayInput onChange={handleChangeDecay} value={decay} />
+      <button
+        className="learn"
+        disabled={isDisabled}
+        onClick={handleClickLearn}
+      >
         Learn
       </button>
       {summary && <Summary summary={summary} />}
