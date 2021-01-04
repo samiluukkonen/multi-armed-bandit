@@ -1,3 +1,7 @@
+* {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
 .content {
   display: flex;
   justify-content: center;
@@ -31,14 +35,32 @@
   margin: 0 0 16px 0;
 }
 
+.settings-label {
+  text-transform: uppercase;
+  margin: 8px;
+}
+
 .settings-container {
   border: 1px solid #ccc;
   border-radius: 5px;
   padding: 16px;
 }
 
+label {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+label > p {
+  font-size: 14px;
+  margin: 8px;
+}
+
 .decay-input-container,
-.epsilon-input-container {
+.epsilon-input-container,
+.iterations-input-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -46,7 +68,7 @@
 }
 
 .epsilon-input-container {
-  margin: 0 0 8px 0;
+  margin: 8px 0;
 }
 
 .decay-input {

@@ -4,6 +4,7 @@ import { createEnvironment } from '../environment'
 import './App.css'
 import DecayInput from './DecayInput'
 import EpsilonInput from './EpsilonInput'
+import IterationsInput from './IterationsInput'
 import ProbabilityInput from './ProbabilityInput'
 import RewardInput from './RewardInput'
 import Summary from './Summary'
@@ -15,6 +16,7 @@ const App: React.FC = () => {
   const [environment, setEnvironment] = useState<Environment>()
   const [epsilon, setEpsilon] = useState<number>(0.1)
   const [isDisabled, setIsDisabled] = useState<boolean>(false)
+  const [iterations, setIterations] = useState<number>(1000)
   const [rewardProbabilities, setRewardProbabilities] = useState<number[]>(
     Array.from({ length: NR_ARMS }, (): number => 0.2)
   )
@@ -29,7 +31,7 @@ const App: React.FC = () => {
         decay,
         environment,
         epsilon,
-        iterations: 1000,
+        iterations,
       })
 
       const learningSummary = epsilonGreedyAgent.act()
@@ -39,7 +41,7 @@ const App: React.FC = () => {
 
       console.log(environment, epsilonGreedyAgent.act())
     }
-  }, [environment])
+  }, [environment, decay, epsilon, iterations])
 
   const handleChangeReward = useCallback(
     (event: ChangeEvent<HTMLInputElement>, arm: number): void => {
@@ -74,6 +76,13 @@ const App: React.FC = () => {
 
     setEnvironment(env)
   }, [rewardProbabilities, rewards])
+
+  const handleChangeIterations = useCallback(
+    (event: ChangeEvent<HTMLInputElement>) => {
+      setIterations(Number(event.target.value))
+    },
+    []
+  )
 
   const handleChangeEpsilon = useCallback(
     (event: ChangeEvent<HTMLInputElement>) => {
@@ -116,7 +125,11 @@ const App: React.FC = () => {
           )
         })}
       </div>
-      <div className="settings-container">
+      <label className="settings-label" htmlFor="settings-container">
+        Settings
+      </label>
+      <div className="settings-container" id="settings-container">
+        <IterationsInput onChange={handleChangeIterations} value={iterations} />
         <EpsilonInput onChange={handleChangeEpsilon} value={epsilon} />
         <DecayInput onChange={handleChangeDecay} value={decay} />
       </div>

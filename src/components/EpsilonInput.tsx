@@ -10,7 +10,8 @@ const EpsilonInput: FC<EpsilonInputProps> = ({ onChange, value }) => {
     <div className="epsilon-input-container">
       <div className="epsilon-input-container">
         <label htmlFor={`epsilon-input`}>
-          Epsilon value. The percentage we explore new arms.
+          Epsilon value.
+          <p>The percentage we explore new arms.</p>
         </label>
         <input
           className="epsilon-input"
@@ -22,7 +23,7 @@ const EpsilonInput: FC<EpsilonInputProps> = ({ onChange, value }) => {
           type="range"
           value={value}
         />
-        <span className="reward-input-value">{value * 100}%</span>
+        <span className="epsilon-input-value">{value * 100}%</span>
       </div>
     </div>
   )
