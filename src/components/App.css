@@ -9,6 +9,10 @@
   align-items: center;
 }
 
+input:hover {
+  cursor: pointer;
+}
+
 .arm-inputs {
   display: flex;
   flex-direction: row;
@@ -50,6 +54,7 @@
 .settings-container {
   border: 1px solid #ccc;
   border-radius: 5px;
+  margin: 0 0 16px 0;
   padding: 16px;
 }
 
@@ -80,6 +85,31 @@ label > p {
 
 .decay-input {
   width: 200px;
+}
+
+.strategies-label {
+  margin: 8px;
+}
+
+.strategies-container {
+  display: flex;
+  flex-direction: row;
+  margin: 0;
+}
+
+.strategy {
+  align-items: center;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin: 8px 8px 16px 8px;
+  padding: 16px;
+}
+
+.strategy > .name {
+  font-weight: 600;
 }
 
 .summary {

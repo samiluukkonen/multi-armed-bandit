@@ -138,8 +138,24 @@ const App: React.FC = () => {
       </label>
       <div className="settings-container" id="settings-container">
         <IterationsInput onChange={handleChangeIterations} value={iterations} />
-        <EpsilonInput onChange={handleChangeEpsilon} value={epsilon} />
-        <DecayInput onChange={handleChangeDecay} value={decay} />
+      </div>
+      <label className="strategies-label" htmlFor="strategies-container">
+        Strategies
+      </label>
+      <div className="strategies-container" id="strategies-container">
+        <div className="strategy epsilon-greey">
+          <div className="name">&epsilon;-greedy</div>
+          <div className="strategy-settings">
+            <EpsilonInput onChange={handleChangeEpsilon} value={epsilon} />
+          </div>
+        </div>
+        <div className="strategy epsilon-decreasing">
+          <div className="name">&epsilon;-decreasing</div>
+          <div className="strategy-settings">
+            <EpsilonInput onChange={handleChangeEpsilon} value={epsilon} />
+            <DecayInput onChange={handleChangeDecay} value={decay} />
+          </div>
+        </div>
       </div>
       <button
         className="learn"
