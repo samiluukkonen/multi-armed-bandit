@@ -71,6 +71,7 @@ label > p {
 }
 
 .decay-input-container,
+.decay-interval-input-container,
 .epsilon-input-container,
 .iterations-input-container {
   display: flex;
@@ -83,7 +84,8 @@ label > p {
   margin: 8px 0;
 }
 
-.decay-input {
+.decay-input,
+.decay-interval-input {
   width: 200px;
 }
 

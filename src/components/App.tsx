@@ -1,9 +1,13 @@
 import classNames from 'classnames'
 import React, { ChangeEvent, useCallback, useEffect, useState } from 'react'
-import { createAgent } from '../agent'
+import {
+  createEpsilonDecreasingAgent,
+  createEpsilonGreedyAgent,
+} from '../agent'
 import { createEnvironment } from '../environment'
 import './App.css'
 import DecayInput from './DecayInput'
+import DecayIntervalInput from './DecayIntervalInput'
 import EpsilonInput from './EpsilonInput'
 import IterationsInput from './IterationsInput'
 import ProbabilityInput from './ProbabilityInput'
@@ -14,6 +18,7 @@ const NR_ARMS = 5
 
 const App: React.FC = () => {
   const [decay, setDecay] = useState<number>(0.0)
+  const [decayInterval, setDecayInterval] = useState<number>(0)
   const [environment, setEnvironment] = useState<Environment>()
   const [epsilonGreedy, setEpsilonGreedy] = useState<number>(0.1)
   const [epsilonDecreasing, setEpsilonDecreasing] = useState<number>(0.1)
@@ -32,21 +37,38 @@ const App: React.FC = () => {
     if (environment) {
       const epsilon = resolveEpsilon()
 
-      const epsilonGreedyAgent = createAgent({
+      const agentFn = resolveAgent()
+
+      if (!agentFn) {
+        throw new Error('cannot resolve agent function')
+      }
+
+      const agent = agentFn({
         decay,
         environment,
         epsilon,
         iterations,
       })
 
-      const learningSummary = epsilonGreedyAgent.act()
+      const learningSummary = agent.act()
 
       setSummary(learningSummary)
       setIsDisabled(false)
 
-      console.log(environment, epsilonGreedyAgent.act())
+      console.log(environment, learningSummary, agent)
     }
   }, [environment])
+
+  const resolveAgent = () => {
+    switch (strategy) {
+      case 'epsilon-greedy':
+        return createEpsilonGreedyAgent
+      case 'epsilon-decreasing':
+        return createEpsilonDecreasingAgent
+      default:
+        return undefined
+    }
+  }
 
   const resolveEpsilon = (): number => {
     switch (strategy) {
@@ -121,6 +143,13 @@ const App: React.FC = () => {
   const handleChangeDecay = useCallback(
     (event: ChangeEvent<HTMLInputElement>): void => {
       setDecay(Number(event.target.value))
+    },
+    []
+  )
+
+  const handleChangeDecayInterval = useCallback(
+    (event: ChangeEvent<HTMLInputElement>): void => {
+      setDecayInterval(Number(event.target.value))
     },
     []
   )
@@ -220,6 +249,11 @@ const App: React.FC = () => {
               disabled={strategy !== 'epsilon-decreasing'}
               onChange={handleChangeDecay}
               value={decay}
+            />
+            <DecayIntervalInput
+              disabled={strategy !== 'epsilon-decreasing'}
+              onChange={handleChangeDecayInterval}
+              value={decayInterval}
             />
           </div>
         </div>
