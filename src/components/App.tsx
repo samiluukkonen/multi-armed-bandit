@@ -3,6 +3,8 @@ import React, { ChangeEvent, useCallback, useEffect, useState } from 'react'
 import {
   createEpsilonDecreasingAgent,
   createEpsilonGreedyAgent,
+  createRandomAgent,
+  StrategyType,
 } from '../agent'
 import { createEnvironment } from '../environment'
 import './App.css'
@@ -30,7 +32,7 @@ const App: React.FC = () => {
   const [rewards, setRewards] = useState<number[]>(
     Array.from({ length: NR_ARMS }, (_, n): number => n)
   )
-  const [strategy, setStrategy] = useState<string>('epsilon-greedy')
+  const [strategy, setStrategy] = useState<StrategyType>('epsilon-greedy')
   const [summary, setSummary] = useState<LearningSummary>()
 
   useEffect(() => {
@@ -65,6 +67,8 @@ const App: React.FC = () => {
         return createEpsilonGreedyAgent
       case 'epsilon-decreasing':
         return createEpsilonDecreasingAgent
+      case 'random':
+        return createRandomAgent
       default:
         return undefined
     }
@@ -154,9 +158,12 @@ const App: React.FC = () => {
     []
   )
 
-  const handleClickStrategy = useCallback((value: string): void => {
-    setStrategy(value)
-  }, [])
+  const handleClickStrategy = useCallback(
+    (strategyType: StrategyType): void => {
+      setStrategy(strategyType)
+    },
+    []
+  )
 
   const resolveStrategyDescription = (): string => {
     switch (strategy) {
@@ -164,6 +171,8 @@ const App: React.FC = () => {
         return 'The best arm is selected for a proportion 1 - &epsilon; of the trials, and a arm is selected at random for a proportion &epsilon;. A typical parameter value might be &epsilon; = 0.1'
       case 'epsilon-decreasing':
         return 'Similar to the epsilon-greedy strategy, except that the value of &epsilon; decreases as the experiment progresses, resulting in highly explorative behaviour at the start and highly exploitative behaviour at the finish.'
+      case 'random':
+        return 'Randomly choose a different arm every iteration'
       default:
         return ''
     }
@@ -171,6 +180,7 @@ const App: React.FC = () => {
 
   const isEpsilonGreedy = strategy === 'epsilon-greedy'
   const isEpsilonDecreasing = strategy === 'epsilon-decreasing'
+  const isRandom = strategy === 'random'
 
   return (
     <div className="content">
@@ -217,6 +227,14 @@ const App: React.FC = () => {
         Strategies
       </label>
       <div className="strategies-container" id="strategies-container">
+        <div
+          className={classNames('strategy random', {
+            active: isRandom,
+          })}
+          onClick={() => handleClickStrategy('random')}
+        >
+          <div className="name">Random</div>
+        </div>
         <div
           className={classNames('strategy epsilon-greedy', {
             active: isEpsilonGreedy,

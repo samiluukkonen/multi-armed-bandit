@@ -1,9 +1,14 @@
 import { argMax, initArray, randomChoice } from './utils'
 
-interface EpsilonGreedyAgentProps {
+export type StrategyType = 'epsilon-greedy' | 'epsilon-decreasing' | 'random'
+
+interface BaseAgentProps {
   environment: Environment
-  epsilon: number
   iterations: number
+}
+
+interface EpsilonGreedyAgentProps extends BaseAgentProps {
+  epsilon: number
 }
 
 interface EpsilonDecreasingAgentProps extends EpsilonGreedyAgentProps {
@@ -29,6 +34,32 @@ const initializeLearningSummary = (length: number): LearningSummary => {
 
   return { arm, qValues, rewards }
 }
+
+export const createRandomAgent = ({
+  environment,
+  iterations,
+}: BaseAgentProps): BaseAgentProps & Agent => ({
+  environment,
+  iterations,
+  act: (): LearningSummary => {
+    const { arm, qValues, rewards } = initializeLearningSummary(
+      environment.nArms
+    )
+
+    for (let i = 1; i <= iterations; i++) {
+      const chosenArm = randomChoice(environment.nArms)
+      const reward = environment.reward(chosenArm)
+
+      arm.rewards[chosenArm] += reward
+      arm.counts[chosenArm] += 1
+      qValues[chosenArm] = arm.rewards[chosenArm] / arm.counts[chosenArm]
+
+      rewards.push(reward)
+    }
+
+    return { arm, qValues, rewards }
+  },
+})
 
 export const createEpsilonGreedyAgent = ({
   environment,
