@@ -68,6 +68,7 @@ const App: React.FC = () => {
       case 'epsilon-decreasing':
         return createEpsilonDecreasingAgent({
           decay,
+          decayInterval,
           environment,
           epsilon,
           iterations,

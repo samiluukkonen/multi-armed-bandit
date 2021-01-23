@@ -130,25 +130,22 @@ label > p {
   width: 700px;
 }
 
-.summary {
+.summary-count {
   align-items: center;
   display: flex;
   flex-direction: column;
   justify-content: center;
   margin: 24px 0 0 0;
+  height: 400px;
+  width: 600px;
 }
 
-.arm-counts {
-  display: flex;
-  flex-direction: row;
+.summary-count-title {
+  margin-bottom: 16px;
 }
 
-.arm-count {
-  margin: 8px;
-}
-
-.arm-count-title {
-  font-weight: 800;
+.total-reward {
+  margin: 16px 0;
 }
 
 .learn {
