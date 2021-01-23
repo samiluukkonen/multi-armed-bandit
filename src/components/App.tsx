@@ -4,6 +4,7 @@ import {
   createEpsilonDecreasingAgent,
   createEpsilonGreedyAgent,
   createRandomAgent,
+  createSoftmaxAgent,
   StrategyType,
 } from '../agent'
 import { createEnvironment } from '../environment'
@@ -15,6 +16,7 @@ import IterationsInput from './IterationsInput'
 import ProbabilityInput from './ProbabilityInput'
 import RewardInput from './RewardInput'
 import Summary from './Summary'
+import TauInput from './TauInput'
 
 const NR_ARMS = 5
 
@@ -32,25 +34,17 @@ const App: React.FC = () => {
   const [rewards, setRewards] = useState<number[]>(
     Array.from({ length: NR_ARMS }, (_, n): number => n)
   )
+  const [tau, setTau] = useState<number>(0.1)
   const [strategy, setStrategy] = useState<StrategyType>('epsilon-greedy')
   const [summary, setSummary] = useState<LearningSummary>()
 
   useEffect(() => {
     if (environment) {
-      const epsilon = resolveEpsilon()
+      const agent = resolveAgent(environment)
 
-      const agentFn = resolveAgent()
-
-      if (!agentFn) {
+      if (!agent) {
         throw new Error('cannot resolve agent function')
       }
-
-      const agent = agentFn({
-        decay,
-        environment,
-        epsilon,
-        iterations,
-      })
 
       const learningSummary = agent.act()
 
@@ -61,14 +55,27 @@ const App: React.FC = () => {
     }
   }, [environment])
 
-  const resolveAgent = () => {
+  const resolveAgent = (environment: Environment) => {
+    const epsilon = resolveEpsilon()
+
     switch (strategy) {
       case 'epsilon-greedy':
-        return createEpsilonGreedyAgent
+        return createEpsilonGreedyAgent({
+          environment,
+          epsilon,
+          iterations,
+        })
       case 'epsilon-decreasing':
-        return createEpsilonDecreasingAgent
+        return createEpsilonDecreasingAgent({
+          decay,
+          environment,
+          epsilon,
+          iterations,
+        })
       case 'random':
-        return createRandomAgent
+        return createRandomAgent({ environment, iterations })
+      case 'softmax':
+        return createSoftmaxAgent({ environment, iterations, tau })
       default:
         return undefined
     }
@@ -165,6 +172,13 @@ const App: React.FC = () => {
     []
   )
 
+  const handleChangeTau = useCallback(
+    (event: ChangeEvent<HTMLInputElement>): void => {
+      setTau(Number(event.target.value))
+    },
+    []
+  )
+
   const resolveStrategyDescription = (): string => {
     switch (strategy) {
       case 'epsilon-greedy':
@@ -181,6 +195,7 @@ const App: React.FC = () => {
   const isEpsilonGreedy = strategy === 'epsilon-greedy'
   const isEpsilonDecreasing = strategy === 'epsilon-decreasing'
   const isRandom = strategy === 'random'
+  const isSoftmax = strategy === 'softmax'
 
   return (
     <div className="content">
@@ -272,6 +287,21 @@ const App: React.FC = () => {
               disabled={strategy !== 'epsilon-decreasing'}
               onChange={handleChangeDecayInterval}
               value={decayInterval}
+            />
+          </div>
+        </div>
+        <div
+          className={classNames('strategy softmax', {
+            active: isSoftmax,
+          })}
+          onClick={() => handleClickStrategy('softmax')}
+        >
+          <div className="name">Softmax</div>
+          <div className="strategy-settings">
+            <TauInput
+              disabled={strategy !== 'softmax'}
+              onChange={handleChangeTau}
+              value={tau}
             />
           </div>
         </div>

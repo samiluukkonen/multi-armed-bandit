@@ -1,10 +1,18 @@
-import { argMax, initArray, randomChoice } from './utils'
+import { argMax, initArray, randomChoice, sum } from './utils'
 
-export type StrategyType = 'epsilon-greedy' | 'epsilon-decreasing' | 'random'
+export type StrategyType =
+  | 'epsilon-decreasing'
+  | 'epsilon-greedy'
+  | 'random'
+  | 'softmax'
 
 interface BaseAgentProps {
   environment: Environment
   iterations: number
+}
+
+interface SoftmaxAgentProps extends BaseAgentProps {
+  tau: number
 }
 
 interface EpsilonGreedyAgentProps extends BaseAgentProps {
@@ -126,6 +134,46 @@ export const createEpsilonDecreasingAgent = ({
       if (decayInterval && decay && i % decayInterval === 0) {
         epsilonDecreasing *= 1 - decay
       }
+    }
+
+    return { arm, qValues, rewards }
+  },
+})
+
+export const createSoftmaxAgent = ({
+  environment,
+  tau,
+  iterations,
+}: SoftmaxAgentProps): SoftmaxAgentProps & Agent => ({
+  environment,
+  tau,
+  iterations,
+  act: (): LearningSummary => {
+    const { arm, qValues, rewards } = initializeLearningSummary(
+      environment.nArms
+    )
+
+    for (let i = 1; i <= iterations; i++) {
+      const values = qValues.map((value: number): number =>
+        Math.exp(value / tau)
+      )
+      const summedValues = sum(values)
+      const softmaxValues = values.map((value: number) => value / summedValues)
+
+      const random = Math.random()
+      const foundArmIndex = softmaxValues.findIndex(
+        (value: number) => value > random
+      )
+
+      const chosenArm =
+        foundArmIndex > -1 ? foundArmIndex : randomChoice(environment.nArms)
+      const reward = environment.reward(chosenArm)
+
+      arm.rewards[chosenArm] += reward
+      arm.counts[chosenArm] += 1
+      qValues[chosenArm] = arm.rewards[chosenArm] / arm.counts[chosenArm]
+
+      rewards.push(reward)
     }
 
     return { arm, qValues, rewards }

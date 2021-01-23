@@ -73,7 +73,8 @@ label > p {
 .decay-input-container,
 .decay-interval-input-container,
 .epsilon-input-container,
-.iterations-input-container {
+.iterations-input-container,
+.tau-input-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
