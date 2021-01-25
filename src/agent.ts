@@ -91,7 +91,9 @@ export const createEpsilonGreedyAgent = ({
 
       arm.rewards[chosenArm] += reward
       arm.counts[chosenArm] += 1
-      qValues[chosenArm] = arm.rewards[chosenArm] / arm.counts[chosenArm]
+      qValues[chosenArm] =
+        qValues[chosenArm] +
+        (reward - qValues[chosenArm]) / arm.counts[chosenArm]
 
       rewards.push(reward)
     }
@@ -127,7 +129,9 @@ export const createEpsilonDecreasingAgent = ({
 
       arm.rewards[chosenArm] += reward
       arm.counts[chosenArm] += 1
-      qValues[chosenArm] = arm.rewards[chosenArm] / arm.counts[chosenArm]
+      qValues[chosenArm] =
+        qValues[chosenArm] +
+        (reward - qValues[chosenArm]) / arm.counts[chosenArm]
 
       rewards.push(reward)
 
@@ -171,7 +175,10 @@ export const createSoftmaxAgent = ({
 
       arm.rewards[chosenArm] += reward
       arm.counts[chosenArm] += 1
-      qValues[chosenArm] = arm.rewards[chosenArm] / arm.counts[chosenArm]
+
+      qValues[chosenArm] =
+        qValues[chosenArm] +
+        (reward - qValues[chosenArm]) / arm.counts[chosenArm]
 
       rewards.push(reward)
     }
