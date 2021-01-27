@@ -118,6 +118,8 @@ export const createEpsilonDecreasingAgent = ({
     const { arm, qValues, rewards } = initializeLearningSummary(
       environment.nArms
     )
+
+    const epsilons: number[] = [epsilon]
     let epsilonDecreasing = epsilon
 
     for (let i = 1; i <= iterations; i++) {
@@ -138,9 +140,11 @@ export const createEpsilonDecreasingAgent = ({
       if (decayInterval && decay && i % decayInterval === 0) {
         epsilonDecreasing *= 1 - decay
       }
+
+      epsilons.push(epsilonDecreasing)
     }
 
-    return { arm, qValues, rewards }
+    return { arm, qValues, rewards, epsilons }
   },
 })
 
