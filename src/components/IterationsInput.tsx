@@ -16,7 +16,7 @@ const IterationsInput: FC<IterationsInputProps> = ({ onChange, value }) => {
         <input
           className="iterations-input"
           id={`iterations-input`}
-          max={10000}
+          max={1000}
           min={0}
           onChange={onChange}
           step={100}

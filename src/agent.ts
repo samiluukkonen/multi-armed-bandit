@@ -142,7 +142,10 @@ export const createEpsilonDecreasingAgent = ({
       rewards.push(reward)
 
       if (decayInterval && decay && i % decayInterval === 0) {
-        epsilonDecreasing *= 1 - decay
+        epsilonDecreasing =
+          Math.round(
+            (epsilonDecreasing * (1 - decay) + Number.EPSILON) * 1000
+          ) / 1000
       }
 
       epsilons.push(epsilonDecreasing)
