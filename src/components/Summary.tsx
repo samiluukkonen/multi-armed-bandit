@@ -29,6 +29,7 @@ const countBar = (arm: Arm) => (
     groupMode="grouped"
     indexBy="arm"
     keys={['count']}
+    labelTextColor={{ from: 'color', modifiers: [['brighter', 3]] }}
     legends={[
       {
         dataFrom: 'keys',
