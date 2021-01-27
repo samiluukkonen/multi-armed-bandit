@@ -18,7 +18,7 @@ import RewardInput from './RewardInput'
 import Summary from './Summary'
 import TauInput from './TauInput'
 
-const NR_ARMS = 2
+const NR_ARMS = 5
 
 const App: React.FC = () => {
   const [decay, setDecay] = useState<number>(0.0)
@@ -27,7 +27,7 @@ const App: React.FC = () => {
   const [epsilonGreedy, setEpsilonGreedy] = useState<number>(0.1)
   const [epsilonDecreasing, setEpsilonDecreasing] = useState<number>(0.1)
   const [isDisabled, setIsDisabled] = useState<boolean>(false)
-  const [iterations, setIterations] = useState<number>(1000)
+  const [iterations, setIterations] = useState<number>(100)
   const [rewardProbabilities, setRewardProbabilities] = useState<number[]>(
     Array.from({ length: NR_ARMS }, (): number => 0.2)
   )

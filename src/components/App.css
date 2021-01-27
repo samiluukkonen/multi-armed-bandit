@@ -144,6 +144,16 @@ label > p {
   margin-bottom: 16px;
 }
 
+.summary-order {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 24px 0 0 0;
+  height: 400px;
+  width: 90%;
+}
+
 .summary-epsilon {
   align-items: center;
   display: flex;

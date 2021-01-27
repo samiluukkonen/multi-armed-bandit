@@ -4,7 +4,7 @@ export const createEnvironment = (
 ): Environment => ({
   reward: (arm: number): number => {
     if (Math.random() > rewardProbabilities[arm]) {
-      return 0.0
+      return 0
     }
 
     return rewards[arm]

@@ -14,8 +14,9 @@ interface Arm {
 }
 
 interface LearningSummary {
-  epsilons?: number[]
   arm: Arm
+  armOrder: number[]
+  epsilons?: number[]
   qValues: number[]
   rewards: number[]
 }

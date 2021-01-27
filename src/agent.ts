@@ -38,9 +38,10 @@ const initializeLearningSummary = (length: number): LearningSummary => {
     rewards: [...initializedArray],
   }
 
+  const armOrder: number[] = []
   const rewards: number[] = []
 
-  return { arm, qValues, rewards }
+  return { arm, armOrder, qValues, rewards }
 }
 
 export const createRandomAgent = ({
@@ -50,7 +51,7 @@ export const createRandomAgent = ({
   environment,
   iterations,
   act: (): LearningSummary => {
-    const { arm, qValues, rewards } = initializeLearningSummary(
+    const { arm, armOrder, qValues, rewards } = initializeLearningSummary(
       environment.nArms
     )
 
@@ -62,10 +63,11 @@ export const createRandomAgent = ({
       arm.counts[chosenArm] += 1
       qValues[chosenArm] = arm.rewards[chosenArm] / arm.counts[chosenArm]
 
+      armOrder.push(chosenArm)
       rewards.push(reward)
     }
 
-    return { arm, qValues, rewards }
+    return { arm, armOrder, qValues, rewards }
   },
 })
 
@@ -78,7 +80,7 @@ export const createEpsilonGreedyAgent = ({
   epsilon,
   iterations,
   act: (): LearningSummary => {
-    const { arm, qValues, rewards } = initializeLearningSummary(
+    const { arm, armOrder, qValues, rewards } = initializeLearningSummary(
       environment.nArms
     )
 
@@ -95,10 +97,11 @@ export const createEpsilonGreedyAgent = ({
         qValues[chosenArm] +
         (reward - qValues[chosenArm]) / arm.counts[chosenArm]
 
+      armOrder.push(chosenArm)
       rewards.push(reward)
     }
 
-    return { arm, qValues, rewards }
+    return { arm, armOrder, qValues, rewards }
   },
 })
 
@@ -115,7 +118,7 @@ export const createEpsilonDecreasingAgent = ({
   epsilon,
   iterations,
   act: (): LearningSummary => {
-    const { arm, qValues, rewards } = initializeLearningSummary(
+    const { arm, armOrder, qValues, rewards } = initializeLearningSummary(
       environment.nArms
     )
 
@@ -135,6 +138,7 @@ export const createEpsilonDecreasingAgent = ({
         qValues[chosenArm] +
         (reward - qValues[chosenArm]) / arm.counts[chosenArm]
 
+      armOrder.push(chosenArm)
       rewards.push(reward)
 
       if (decayInterval && decay && i % decayInterval === 0) {
@@ -144,7 +148,7 @@ export const createEpsilonDecreasingAgent = ({
       epsilons.push(epsilonDecreasing)
     }
 
-    return { arm, qValues, rewards, epsilons }
+    return { arm, armOrder, qValues, rewards, epsilons }
   },
 })
 
@@ -157,7 +161,7 @@ export const createSoftmaxAgent = ({
   tau,
   iterations,
   act: (): LearningSummary => {
-    const { arm, qValues, rewards } = initializeLearningSummary(
+    const { arm, armOrder, qValues, rewards } = initializeLearningSummary(
       environment.nArms
     )
 
@@ -184,9 +188,10 @@ export const createSoftmaxAgent = ({
         qValues[chosenArm] +
         (reward - qValues[chosenArm]) / arm.counts[chosenArm]
 
+      armOrder.push(chosenArm)
       rewards.push(reward)
     }
 
-    return { arm, qValues, rewards }
+    return { arm, armOrder, qValues, rewards }
   },
 })
