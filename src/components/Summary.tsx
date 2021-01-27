@@ -33,8 +33,16 @@ const countBar = (arm: Arm) => (
         background: 'inherit',
         color: '#eed312',
         rotation: -45,
-        lineWidth: 6,
+        lineWidth: 1,
         spacing: 7,
+      },
+      {
+        id: 'gradient',
+        type: 'linearGradient',
+        colors: [
+          { offset: 0, color: '#faf047' },
+          { offset: 100, color: '#e4b400' },
+        ],
       },
     ]}
     fill={[
@@ -42,7 +50,7 @@ const countBar = (arm: Arm) => (
         match: {
           id: 'reward',
         },
-        id: 'lines',
+        id: 'gradient',
       },
     ]}
     groupMode="grouped"
