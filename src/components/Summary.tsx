@@ -17,7 +17,7 @@ const resolveCountBarData = (arm: Arm) =>
   arm.counts.map((count: number, index: number) => ({
     arm: `Arm ${index}`,
     count,
-    countColor: 'hsl(352, 70%, 50%)',
+    reward: arm.rewards[index],
   }))
 
 const countBar = (arm: Arm) => (
@@ -26,10 +26,29 @@ const countBar = (arm: Arm) => (
     // @ts-expect-error no such prop
     colorBy="index"
     data={resolveCountBarData(arm)}
+    defs={[
+      {
+        id: 'lines',
+        type: 'patternLines',
+        background: 'inherit',
+        color: '#eed312',
+        rotation: -45,
+        lineWidth: 6,
+        spacing: 7,
+      },
+    ]}
+    fill={[
+      {
+        match: {
+          id: 'reward',
+        },
+        id: 'lines',
+      },
+    ]}
     groupMode="grouped"
     indexBy="arm"
-    keys={['count']}
-    labelTextColor={{ from: 'color', modifiers: [['brighter', 3]] }}
+    keys={['count', 'reward']}
+    labelTextColor={{ from: 'color', modifiers: [['darker', 3]] }}
     legends={[
       {
         dataFrom: 'keys',
@@ -55,7 +74,6 @@ const countBar = (arm: Arm) => (
       },
     ]}
     margin={{ top: 20, right: 20, bottom: 40, left: 60 }}
-    padding={0.5}
   />
 )
 
@@ -81,15 +99,16 @@ const CustomNode = ({
     return (
       <g transform={`translate(${x},${y})`}>
         <circle
-          r={size / 2}
           fill="none"
+          onClick={onClick}
+          onMouseEnter={onMouseEnter}
+          onMouseLeave={onMouseLeave}
+          onMouseMove={onMouseMove}
+          opacity={0.5}
+          r={size / 2}
           stroke={color}
           strokeWidth={2}
           style={{ mixBlendMode: blendMode }}
-          onMouseEnter={onMouseEnter}
-          onMouseMove={onMouseMove}
-          onMouseLeave={onMouseLeave}
-          onClick={onClick}
         />
       </g>
     )
@@ -98,13 +117,15 @@ const CustomNode = ({
   return (
     <g transform={`translate(${x},${y})`}>
       <circle
-        r={size / 2}
         fill={color}
-        style={{ mixBlendMode: blendMode }}
-        onMouseEnter={onMouseEnter}
-        onMouseMove={onMouseMove}
-        onMouseLeave={onMouseLeave}
         onClick={onClick}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
+        onMouseMove={onMouseMove}
+        r={size / 2}
+        stroke={color}
+        strokeWidth={2}
+        style={{ mixBlendMode: blendMode }}
       />
     </g>
   )

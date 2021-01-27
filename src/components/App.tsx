@@ -27,7 +27,7 @@ const App: React.FC = () => {
   const [epsilonGreedy, setEpsilonGreedy] = useState<number>(0.1)
   const [epsilonDecreasing, setEpsilonDecreasing] = useState<number>(0.1)
   const [isDisabled, setIsDisabled] = useState<boolean>(false)
-  const [iterations, setIterations] = useState<number>(100)
+  const [iterations, setIterations] = useState<number>(150)
   const [rewardProbabilities, setRewardProbabilities] = useState<number[]>(
     Array.from({ length: NR_ARMS }, (): number => 0.2)
   )
