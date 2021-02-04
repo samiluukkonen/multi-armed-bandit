@@ -2,6 +2,7 @@ import { argMax, initArray, randomChoice, sum } from './utils'
 
 export type StrategyType =
   | 'epsilon-decreasing'
+  | 'epsilon-first'
   | 'epsilon-greedy'
   | 'random'
   | 'softmax'
@@ -13,6 +14,10 @@ interface BaseAgentProps {
 
 interface SoftmaxAgentProps extends BaseAgentProps {
   tau: number
+}
+
+interface EpsilonFirstAgentProps extends BaseAgentProps {
+  exploration: number
 }
 
 interface EpsilonGreedyAgentProps extends BaseAgentProps {
@@ -62,6 +67,38 @@ export const createRandomAgent = ({
       arm.rewards[chosenArm] += reward
       arm.counts[chosenArm] += 1
       qValues[chosenArm] = arm.rewards[chosenArm] / arm.counts[chosenArm]
+
+      armOrder.push(chosenArm)
+      rewards.push(reward)
+    }
+
+    return { arm, armOrder, qValues, rewards }
+  },
+})
+
+export const createEpsilonFirstAgent = ({
+  environment,
+  exploration,
+  iterations,
+}: EpsilonFirstAgentProps): EpsilonFirstAgentProps & Agent => ({
+  environment,
+  exploration,
+  iterations,
+  act: (): LearningSummary => {
+    const { arm, armOrder, qValues, rewards } = initializeLearningSummary(
+      environment.nArms
+    )
+
+    for (let i = 1; i <= iterations; i++) {
+      const chosenArm =
+        i > exploration ? argMax(qValues) : randomChoice(environment.nArms)
+      const reward = environment.reward(chosenArm)
+
+      arm.rewards[chosenArm] += reward
+      arm.counts[chosenArm] += 1
+      qValues[chosenArm] =
+        qValues[chosenArm] +
+        (reward - qValues[chosenArm]) / arm.counts[chosenArm]
 
       armOrder.push(chosenArm)
       rewards.push(reward)

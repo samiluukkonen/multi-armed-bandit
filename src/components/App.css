@@ -81,8 +81,13 @@ label > p {
   align-items: center;
 }
 
-.epsilon-input-container {
+.epsilon-input-container,
+.tau-input-container {
   margin: 8px 0;
+}
+
+label {
+  text-align: center;
 }
 
 .decay-input,

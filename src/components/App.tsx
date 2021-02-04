@@ -3,6 +3,7 @@ import React, { ChangeEvent, useCallback, useEffect, useState } from 'react'
 import {
   createEpsilonDecreasingAgent,
   createEpsilonGreedyAgent,
+  createEpsilonFirstAgent,
   createRandomAgent,
   createSoftmaxAgent,
   StrategyType,
@@ -12,6 +13,7 @@ import './App.css'
 import DecayInput from './DecayInput'
 import DecayIntervalInput from './DecayIntervalInput'
 import EpsilonInput from './EpsilonInput'
+import EpsilonFirstInput from './EpsilonFirstInput'
 import IterationsInput from './IterationsInput'
 import ProbabilityInput from './ProbabilityInput'
 import RewardInput from './RewardInput'
@@ -24,6 +26,7 @@ const App: React.FC = () => {
   const [decay, setDecay] = useState<number>(0.0)
   const [decayInterval, setDecayInterval] = useState<number>(0)
   const [environment, setEnvironment] = useState<Environment>()
+  const [exploration, setExploration] = useState<number>(100)
   const [epsilonGreedy, setEpsilonGreedy] = useState<number>(0.1)
   const [epsilonDecreasing, setEpsilonDecreasing] = useState<number>(0.1)
   const [isDisabled, setIsDisabled] = useState<boolean>(false)
@@ -59,6 +62,12 @@ const App: React.FC = () => {
     const epsilon = resolveEpsilon()
 
     switch (strategy) {
+      case 'epsilon-first':
+        return createEpsilonFirstAgent({
+          environment,
+          exploration,
+          iterations,
+        })
       case 'epsilon-greedy':
         return createEpsilonGreedyAgent({
           environment,
@@ -152,6 +161,13 @@ const App: React.FC = () => {
     [strategy]
   )
 
+  const handleChangeExploration = useCallback(
+    (event: ChangeEvent<HTMLInputElement>): void => {
+      setExploration(Number(event.target.value))
+    },
+    []
+  )
+
   const handleChangeDecay = useCallback(
     (event: ChangeEvent<HTMLInputElement>): void => {
       setDecay(Number(event.target.value))
@@ -182,6 +198,8 @@ const App: React.FC = () => {
 
   const resolveStrategyDescription = (): string => {
     switch (strategy) {
+      case 'epsilon-first':
+        return 'A pure exploration phase is followed by a pure exploitation phase.'
       case 'epsilon-greedy':
         return 'The best arm is selected for a proportion 1 - &epsilon; of the trials, and a arm is selected at random for a proportion &epsilon;. A typical parameter value might be &epsilon; = 0.1'
       case 'epsilon-decreasing':
@@ -193,8 +211,9 @@ const App: React.FC = () => {
     }
   }
 
-  const isEpsilonGreedy = strategy === 'epsilon-greedy'
   const isEpsilonDecreasing = strategy === 'epsilon-decreasing'
+  const isEpsilonFirst = strategy === 'epsilon-first'
+  const isEpsilonGreedy = strategy === 'epsilon-greedy'
   const isRandom = strategy === 'random'
   const isSoftmax = strategy === 'softmax'
 
@@ -250,6 +269,21 @@ const App: React.FC = () => {
           onClick={() => handleClickStrategy('random')}
         >
           <div className="name">Random</div>
+        </div>
+        <div
+          className={classNames('strategy epsilon-first', {
+            active: isEpsilonFirst,
+          })}
+          onClick={() => handleClickStrategy('epsilon-first')}
+        >
+          <div className="name">&epsilon;-first</div>
+          <div className="strategy-settings">
+            <EpsilonFirstInput
+              disabled={strategy !== 'epsilon-first'}
+              onChange={handleChangeExploration}
+              value={exploration}
+            />
+          </div>
         </div>
         <div
           className={classNames('strategy epsilon-greedy', {
