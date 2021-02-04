@@ -2,15 +2,24 @@
   font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
+button {
+  padding: 16px;
+  text-transform: uppercase;
+}
+
 .content {
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
   align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 input:hover {
   cursor: pointer;
+}
+
+legend {
+  text-align: center;
 }
 
 .arm-inputs {
@@ -20,21 +29,24 @@ input:hover {
 }
 
 .arm-input-with-label {
+  align-items: center;
+  border: 1px solid #ccc;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+}
+
+.arm-input-with-label:hover {
+  border: 1px solid #07c;
 }
 
 .arm-input-container {
   align-items: center;
-  border: 1px solid #ccc;
-  border-radius: 5px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 16px;
   margin: 8px;
+  padding: 16px;
 }
 
 .arm-input-reward {
@@ -58,6 +70,10 @@ input:hover {
   padding: 16px;
 }
 
+.settings-container:hover {
+  border: 1px solid #07c;
+}
+
 label {
   align-items: center;
   display: flex;
@@ -79,11 +95,6 @@ label > p {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-}
-
-.epsilon-input-container,
-.tau-input-container {
-  margin: 8px 0;
 }
 
 label {
@@ -115,6 +126,7 @@ label {
   justify-content: flex-start;
   margin: 8px 8px 16px 8px;
   padding: 16px;
+  text-align: center;
 }
 
 .strategy:hover {
@@ -126,13 +138,13 @@ label {
   border: 1px solid #07c;
 }
 
-.strategy > .name {
-  font-weight: 600;
+.strategy-settings {
+  display: grid;
+  grid-row-gap: 16px;
 }
 
-.strategy-description {
-  text-align: center;
-  width: 700px;
+.strategy > .name {
+  font-weight: 600;
 }
 
 .summary-count {
@@ -170,5 +182,5 @@ label {
 }
 
 .learn {
-  margin: 16px;
+  margin: 32px;
 }

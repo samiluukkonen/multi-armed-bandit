@@ -196,21 +196,6 @@ const App: React.FC = () => {
     []
   )
 
-  const resolveStrategyDescription = (): string => {
-    switch (strategy) {
-      case 'epsilon-first':
-        return 'A pure exploration phase is followed by a pure exploitation phase.'
-      case 'epsilon-greedy':
-        return 'The best arm is selected for a proportion 1 - &epsilon; of the trials, and a arm is selected at random for a proportion &epsilon;. A typical parameter value might be &epsilon; = 0.1'
-      case 'epsilon-decreasing':
-        return 'Similar to the epsilon-greedy strategy, except that the value of &epsilon; decreases as the experiment progresses, resulting in highly explorative behaviour at the start and highly exploitative behaviour at the finish.'
-      case 'random':
-        return 'Randomly choose a different arm every iteration'
-      default:
-        return ''
-    }
-  }
-
   const isEpsilonDecreasing = strategy === 'epsilon-decreasing'
   const isEpsilonFirst = strategy === 'epsilon-first'
   const isEpsilonGreedy = strategy === 'epsilon-greedy'
@@ -228,11 +213,11 @@ const App: React.FC = () => {
       <div className="arm-inputs">
         {Array.from({ length: NR_ARMS }).map((_, arm: number) => {
           return (
-            <div
+            <fieldset
               className="arm-input-with-label"
               key={`arm-input-with-label--${arm}`}
             >
-              <label htmlFor={`arm-input-container-${arm}`}>Arm {arm}</label>
+              <legend>Arm {arm}</legend>
               <div
                 className="arm-input-container"
                 id={`arm-input-container-${arm}`}
@@ -248,35 +233,34 @@ const App: React.FC = () => {
                   value={rewardProbabilities[arm]}
                 />
               </div>
-            </div>
+            </fieldset>
           )
         })}
       </div>
-      <label className="settings-label" htmlFor="settings-container">
-        Settings
-      </label>
-      <div className="settings-container" id="settings-container">
+      <fieldset className="settings-container" id="settings-container">
+        <legend className="settings-label">Settings</legend>
         <IterationsInput onChange={handleChangeIterations} value={iterations} />
-      </div>
+      </fieldset>
       <label className="strategies-label" htmlFor="strategies-container">
         Strategies
       </label>
       <div className="strategies-container" id="strategies-container">
-        <div
+        <fieldset
           className={classNames('strategy random', {
             active: isRandom,
           })}
           onClick={() => handleClickStrategy('random')}
         >
-          <div className="name">Random</div>
-        </div>
-        <div
+          <legend className="name">Random</legend>
+          <p>Randomly choose different arm everytime.</p>
+        </fieldset>
+        <fieldset
           className={classNames('strategy epsilon-first', {
             active: isEpsilonFirst,
           })}
           onClick={() => handleClickStrategy('epsilon-first')}
         >
-          <div className="name">&epsilon;-first</div>
+          <legend className="name">&epsilon;-first</legend>
           <div className="strategy-settings">
             <EpsilonFirstInput
               disabled={strategy !== 'epsilon-first'}
@@ -284,14 +268,17 @@ const App: React.FC = () => {
               value={exploration}
             />
           </div>
-        </div>
-        <div
+          <p>
+            A pure exploration phase is followed by a pure exploitation phase.
+          </p>
+        </fieldset>
+        <fieldset
           className={classNames('strategy epsilon-greedy', {
             active: isEpsilonGreedy,
           })}
           onClick={() => handleClickStrategy('epsilon-greedy')}
         >
-          <div className="name">&epsilon;-greedy</div>
+          <legend className="name">&epsilon;-greedy</legend>
           <div className="strategy-settings">
             <EpsilonInput
               disabled={strategy !== 'epsilon-greedy'}
@@ -299,14 +286,19 @@ const App: React.FC = () => {
               value={epsilonGreedy}
             />
           </div>
-        </div>
-        <div
+          <p>
+            The best arm is selected for a proportion 1 - &epsilon; of the
+            trials, and a arm is selected at random for a proportion &epsilon;.
+            A typical parameter value might be &epsilon; = 0.1.
+          </p>
+        </fieldset>
+        <fieldset
           className={classNames('strategy epsilon-decreasing', {
             active: isEpsilonDecreasing,
           })}
           onClick={() => handleClickStrategy('epsilon-decreasing')}
         >
-          <div className="name">&epsilon;-decreasing</div>
+          <legend className="name">&epsilon;-decreasing</legend>
           <div className="strategy-settings">
             <EpsilonInput
               disabled={strategy !== 'epsilon-decreasing'}
@@ -324,14 +316,20 @@ const App: React.FC = () => {
               value={decayInterval}
             />
           </div>
-        </div>
-        <div
+          <p>
+            Similar to the epsilon-greedy strategy, except that the value of
+            &epsilon; decreases as the experiment progresses, resulting in
+            highly explorative behaviour at the start and highly exploitative
+            behaviour at the finish.
+          </p>
+        </fieldset>
+        <fieldset
           className={classNames('strategy softmax', {
             active: isSoftmax,
           })}
           onClick={() => handleClickStrategy('softmax')}
         >
-          <div className="name">Softmax</div>
+          <legend className="name">Softmax</legend>
           <div className="strategy-settings">
             <TauInput
               disabled={strategy !== 'softmax'}
@@ -339,12 +337,8 @@ const App: React.FC = () => {
               value={tau}
             />
           </div>
-        </div>
+        </fieldset>
       </div>
-      <div
-        className="strategy-description"
-        dangerouslySetInnerHTML={{ __html: resolveStrategyDescription() }}
-      ></div>
       <button
         className="learn"
         disabled={isDisabled}
