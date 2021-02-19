@@ -2,10 +2,11 @@ import classNames from 'classnames'
 import React, { ChangeEvent, useCallback, useEffect, useState } from 'react'
 import {
   createEpsilonDecreasingAgent,
-  createEpsilonGreedyAgent,
   createEpsilonFirstAgent,
+  createEpsilonGreedyAgent,
   createRandomAgent,
   createSoftmaxAgent,
+  createUCB1Agent,
   StrategyType,
 } from '../agent'
 import { createEnvironment } from '../environment'
@@ -86,6 +87,8 @@ const App: React.FC = () => {
         return createRandomAgent({ environment, iterations })
       case 'softmax':
         return createSoftmaxAgent({ environment, iterations, tau })
+      case 'ucb1':
+        return createUCB1Agent({ environment, iterations })
       default:
         return undefined
     }
@@ -201,6 +204,7 @@ const App: React.FC = () => {
   const isEpsilonGreedy = strategy === 'epsilon-greedy'
   const isRandom = strategy === 'random'
   const isSoftmax = strategy === 'softmax'
+  const isUCB1 = strategy === 'ucb1'
 
   return (
     <div className="content">
@@ -337,6 +341,18 @@ const App: React.FC = () => {
               value={tau}
             />
           </div>
+        </fieldset>
+        <fieldset
+          className={classNames('strategy ucb1', {
+            active: isUCB1,
+          })}
+          onClick={() => handleClickStrategy('ucb1')}
+        >
+          <legend className="name">UCB1</legend>
+          <p>
+            Upper confidence bound. Achieves regret that grows only
+            logarithmically with the number of actions taken.
+          </p>
         </fieldset>
       </div>
       <button

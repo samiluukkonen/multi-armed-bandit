@@ -6,6 +6,7 @@ export type StrategyType =
   | 'epsilon-greedy'
   | 'random'
   | 'softmax'
+  | 'ucb1'
 
 interface BaseAgentProps {
   environment: Environment
@@ -224,6 +225,43 @@ export const createSoftmaxAgent = ({
       arm.rewards[chosenArm] += reward
       arm.counts[chosenArm] += 1
 
+      qValues[chosenArm] =
+        qValues[chosenArm] +
+        (reward - qValues[chosenArm]) / arm.counts[chosenArm]
+
+      armOrder.push(chosenArm)
+      rewards.push(reward)
+    }
+
+    return { arm, armOrder, qValues, rewards }
+  },
+})
+
+export const createUCB1Agent = ({
+  environment,
+  iterations,
+}: BaseAgentProps): BaseAgentProps & Agent => ({
+  environment,
+  iterations,
+  act: (): LearningSummary => {
+    const { arm, armOrder, qValues, rewards } = initializeLearningSummary(
+      environment.nArms
+    )
+
+    for (let i = 1; i <= iterations; i++) {
+      const items: number[] = Array.from({ length: arm.counts.length })
+        .fill(0)
+        .map(
+          (_, index: number): number =>
+            qValues[index] +
+            Math.sqrt((2 * Math.log(i)) / (1 + arm.counts[index]))
+        )
+
+      const chosenArm = argMax(items)
+      const reward = environment.reward(chosenArm)
+
+      arm.rewards[chosenArm] += reward
+      arm.counts[chosenArm] += 1
       qValues[chosenArm] =
         qValues[chosenArm] +
         (reward - qValues[chosenArm]) / arm.counts[chosenArm]
