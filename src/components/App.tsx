@@ -353,6 +353,12 @@ const App: React.FC = () => {
             Upper confidence bound. Achieves regret that grows only
             logarithmically with the number of actions taken.
           </p>
+          <p>
+            Confidence bound grows with the total number of actions we have
+            taken but shrinks with the number of times we have tried this
+            particular action. This ensures each action is tried infinitely
+            often but still balances exploration and exploitation.
+          </p>
         </fieldset>
       </div>
       <button
