@@ -13,9 +13,15 @@ interface Arm {
   rewards: number[]
 }
 
+interface ConfidenceInterval {
+  max: number
+  min: number
+}
+
 interface LearningSummary {
   arm: Arm
   armOrder: number[]
+  condifenceIntervals?: ConfidenceInterval[][]
   epsilons?: number[]
   qValues: number[]
   rewards: number[]

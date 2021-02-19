@@ -1,5 +1,6 @@
 import { ResponsiveBar } from '@nivo/bar'
 import { ResponsiveLine } from '@nivo/line'
+import { ResponsiveStream } from '@nivo/stream'
 import { NodeProps, ResponsiveScatterPlot } from '@nivo/scatterplot'
 import React, { FC } from 'react'
 import { sum } from '../utils'
@@ -267,6 +268,60 @@ const epsilonLine = (epsilons: number[]) => (
   />
 )
 
+const resolveConfidenceIntervalData = (
+  condifenceIntervals: ConfidenceInterval[][]
+) =>
+  condifenceIntervals.map((intervals: ConfidenceInterval[]) =>
+    intervals.reduce(
+      (prev, curr, index) => ({
+        ...prev,
+        // [`Arm ${index}`]: curr.max > 2 ? 2 : curr.max.toFixed(3),
+        [`Arm ${index}`]: curr.max > 4 ? 4 : (curr.max - curr.min).toFixed(3),
+      }),
+      {}
+    )
+  )
+
+const confidenceIntervalStream = (
+  condifenceIntervals: ConfidenceInterval[][]
+) => (
+  <ResponsiveStream
+    data={resolveConfidenceIntervalData(condifenceIntervals)}
+    keys={['Arm 0', 'Arm 1', 'Arm 2', 'Arm 3', 'Arm 4']}
+    margin={{ top: 20, right: 160, bottom: 50, left: 60 }}
+    offsetType="silhouette"
+    colors={{ scheme: 'category10' }}
+    fillOpacity={0.85}
+    borderColor={{ theme: 'background' }}
+    enableGridX={false}
+    enableGridY={false}
+    axisTop={null}
+    axisRight={null}
+    axisBottom={null}
+    axisLeft={null}
+    legends={[
+      {
+        anchor: 'bottom-right',
+        direction: 'column',
+        translateX: 100,
+        itemWidth: 80,
+        itemHeight: 20,
+        itemTextColor: '#999999',
+        symbolSize: 12,
+        symbolShape: 'circle',
+        effects: [
+          {
+            on: 'hover',
+            style: {
+              itemTextColor: '#000000',
+            },
+          },
+        ],
+      },
+    ]}
+  />
+)
+
 const Summary: FC<SummaryProps> = ({ summary }) => {
   return (
     <>
@@ -284,6 +339,13 @@ const Summary: FC<SummaryProps> = ({ summary }) => {
       </div>
       <div className="summary-epsilon">
         {summary.epsilons && epsilonLine(summary.epsilons)}
+      </div>
+      <div className="summary-confidence-intervals">
+        <span className="summary-confidence-intervals-title">
+          Confidence interval
+        </span>
+        {summary.condifenceIntervals &&
+          confidenceIntervalStream(summary.condifenceIntervals)}
       </div>
     </>
   )
