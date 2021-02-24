@@ -256,8 +256,26 @@ export const createUCB1Agent = ({
       )
     )
 
+    const calculateConfidenceIntervals = ({
+      iteration,
+    }: {
+      iteration: number
+    }): void => {
+      for (let nthArm = 0; nthArm < environment.nArms; nthArm++) {
+        const avgReward =
+          arm.rewards[nthArm] / (arm.counts[nthArm] + Number.EPSILON)
+        const confidence = Math.sqrt(
+          (3 * Math.log(iteration)) / (2 * arm.counts[nthArm] + Number.EPSILON)
+        )
+        condifenceIntervals[iteration - 1][nthArm] = {
+          max: avgReward + confidence,
+          min: avgReward - confidence,
+        }
+      }
+    }
+
     for (let i = 1; i <= iterations; i++) {
-      const items: number[] = Array.from({ length: arm.counts.length })
+      const items: number[] = Array.from({ length: environment.nArms })
         .fill(0)
         .map(
           (_, index: number): number =>
@@ -274,16 +292,7 @@ export const createUCB1Agent = ({
         qValues[chosenArm] +
         (reward - qValues[chosenArm]) / arm.counts[chosenArm]
 
-      for (let k = 0; k < environment.nArms; k++) {
-        const avgReward = arm.rewards[k] / (arm.counts[k] + Number.EPSILON)
-        const confidence = Math.sqrt(
-          (3 * Math.log(i)) / (2 * arm.counts[k] + Number.EPSILON)
-        )
-        condifenceIntervals[i - 1][k] = {
-          max: avgReward + confidence,
-          min: avgReward - confidence,
-        }
-      }
+      calculateConfidenceIntervals({ iteration: i })
 
       armOrder.push(chosenArm)
       rewards.push(reward)
