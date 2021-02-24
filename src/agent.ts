@@ -1,6 +1,6 @@
 import { argMax, initArray, randomChoice, sum } from './utils'
 
-export type StrategyType =
+export type PolicyType =
   | 'epsilon-decreasing'
   | 'epsilon-first'
   | 'epsilon-greedy'

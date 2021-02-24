@@ -7,7 +7,7 @@ import {
   createRandomAgent,
   createSoftmaxAgent,
   createUCB1Agent,
-  StrategyType,
+  PolicyType,
 } from '../agent'
 import { createEnvironment } from '../environment'
 import './App.css'
@@ -39,7 +39,7 @@ const App: React.FC = () => {
     Array.from({ length: NR_ARMS }, (_, n): number => n)
   )
   const [tau, setTau] = useState<number>(0.1)
-  const [strategy, setStrategy] = useState<StrategyType>('epsilon-greedy')
+  const [policy, setPolicy] = useState<PolicyType>('epsilon-greedy')
   const [summary, setSummary] = useState<LearningSummary>()
 
   useEffect(() => {
@@ -62,7 +62,7 @@ const App: React.FC = () => {
   const resolveAgent = (environment: Environment) => {
     const epsilon = resolveEpsilon()
 
-    switch (strategy) {
+    switch (policy) {
       case 'epsilon-first':
         return createEpsilonFirstAgent({
           environment,
@@ -95,7 +95,7 @@ const App: React.FC = () => {
   }
 
   const resolveEpsilon = (): number => {
-    switch (strategy) {
+    switch (policy) {
       case 'epsilon-greedy':
         return epsilonGreedy
       case 'epsilon-decreasing':
@@ -106,7 +106,7 @@ const App: React.FC = () => {
   }
 
   const resolveUpdateEpsilon = (value: number): void => {
-    switch (strategy) {
+    switch (policy) {
       case 'epsilon-greedy':
         setEpsilonGreedy(value)
         break
@@ -161,7 +161,7 @@ const App: React.FC = () => {
     (event: ChangeEvent<HTMLInputElement>): void => {
       resolveUpdateEpsilon(Number(event.target.value))
     },
-    [strategy]
+    [policy]
   )
 
   const handleChangeExploration = useCallback(
@@ -185,12 +185,9 @@ const App: React.FC = () => {
     []
   )
 
-  const handleClickStrategy = useCallback(
-    (strategyType: StrategyType): void => {
-      setStrategy(strategyType)
-    },
-    []
-  )
+  const handleClickPolicy = useCallback((policyType: PolicyType): void => {
+    setPolicy(policyType)
+  }, [])
 
   const handleChangeTau = useCallback(
     (event: ChangeEvent<HTMLInputElement>): void => {
@@ -199,12 +196,12 @@ const App: React.FC = () => {
     []
   )
 
-  const isEpsilonDecreasing = strategy === 'epsilon-decreasing'
-  const isEpsilonFirst = strategy === 'epsilon-first'
-  const isEpsilonGreedy = strategy === 'epsilon-greedy'
-  const isRandom = strategy === 'random'
-  const isSoftmax = strategy === 'softmax'
-  const isUCB1 = strategy === 'ucb1'
+  const isEpsilonDecreasing = policy === 'epsilon-decreasing'
+  const isEpsilonFirst = policy === 'epsilon-first'
+  const isEpsilonGreedy = policy === 'epsilon-greedy'
+  const isRandom = policy === 'random'
+  const isSoftmax = policy === 'softmax'
+  const isUCB1 = policy === 'ucb1'
 
   return (
     <div className="content">
@@ -245,29 +242,29 @@ const App: React.FC = () => {
         <legend className="settings-label">Settings</legend>
         <IterationsInput onChange={handleChangeIterations} value={iterations} />
       </fieldset>
-      <label className="strategies-label" htmlFor="strategies-container">
-        Strategies
+      <label className="policies-label" htmlFor="policies-container">
+        Policies
       </label>
-      <div className="strategies-container" id="strategies-container">
+      <div className="policies-container" id="policies-container">
         <fieldset
-          className={classNames('strategy random', {
+          className={classNames('policy random', {
             active: isRandom,
           })}
-          onClick={() => handleClickStrategy('random')}
+          onClick={() => handleClickPolicy('random')}
         >
           <legend className="name">Random</legend>
           <p>Randomly choose different arm everytime.</p>
         </fieldset>
         <fieldset
-          className={classNames('strategy epsilon-first', {
+          className={classNames('policy epsilon-first', {
             active: isEpsilonFirst,
           })}
-          onClick={() => handleClickStrategy('epsilon-first')}
+          onClick={() => handleClickPolicy('epsilon-first')}
         >
           <legend className="name">&epsilon;-first</legend>
-          <div className="strategy-settings">
+          <div className="policy-settings">
             <EpsilonFirstInput
-              disabled={strategy !== 'epsilon-first'}
+              disabled={policy !== 'epsilon-first'}
               onChange={handleChangeExploration}
               value={exploration}
             />
@@ -277,15 +274,15 @@ const App: React.FC = () => {
           </p>
         </fieldset>
         <fieldset
-          className={classNames('strategy epsilon-greedy', {
+          className={classNames('policy epsilon-greedy', {
             active: isEpsilonGreedy,
           })}
-          onClick={() => handleClickStrategy('epsilon-greedy')}
+          onClick={() => handleClickPolicy('epsilon-greedy')}
         >
           <legend className="name">&epsilon;-greedy</legend>
-          <div className="strategy-settings">
+          <div className="policy-settings">
             <EpsilonInput
-              disabled={strategy !== 'epsilon-greedy'}
+              disabled={policy !== 'epsilon-greedy'}
               onChange={handleChangeEpsilon}
               value={epsilonGreedy}
             />
@@ -297,56 +294,56 @@ const App: React.FC = () => {
           </p>
         </fieldset>
         <fieldset
-          className={classNames('strategy epsilon-decreasing', {
+          className={classNames('policy epsilon-decreasing', {
             active: isEpsilonDecreasing,
           })}
-          onClick={() => handleClickStrategy('epsilon-decreasing')}
+          onClick={() => handleClickPolicy('epsilon-decreasing')}
         >
           <legend className="name">&epsilon;-decreasing</legend>
-          <div className="strategy-settings">
+          <div className="policy-settings">
             <EpsilonInput
-              disabled={strategy !== 'epsilon-decreasing'}
+              disabled={policy !== 'epsilon-decreasing'}
               onChange={handleChangeEpsilon}
               value={epsilonDecreasing}
             />
             <DecayInput
-              disabled={strategy !== 'epsilon-decreasing'}
+              disabled={policy !== 'epsilon-decreasing'}
               onChange={handleChangeDecay}
               value={decay}
             />
             <DecayIntervalInput
-              disabled={strategy !== 'epsilon-decreasing'}
+              disabled={policy !== 'epsilon-decreasing'}
               onChange={handleChangeDecayInterval}
               value={decayInterval}
             />
           </div>
           <p>
-            Similar to the epsilon-greedy strategy, except that the value of
+            Similar to the epsilon-greedy policy, except that the value of
             &epsilon; decreases as the experiment progresses, resulting in
             highly explorative behaviour at the start and highly exploitative
             behaviour at the finish.
           </p>
         </fieldset>
         <fieldset
-          className={classNames('strategy softmax', {
+          className={classNames('policy softmax', {
             active: isSoftmax,
           })}
-          onClick={() => handleClickStrategy('softmax')}
+          onClick={() => handleClickPolicy('softmax')}
         >
           <legend className="name">Softmax</legend>
-          <div className="strategy-settings">
+          <div className="policy-settings">
             <TauInput
-              disabled={strategy !== 'softmax'}
+              disabled={policy !== 'softmax'}
               onChange={handleChangeTau}
               value={tau}
             />
           </div>
         </fieldset>
         <fieldset
-          className={classNames('strategy ucb1', {
+          className={classNames('policy ucb1', {
             active: isUCB1,
           })}
-          onClick={() => handleClickStrategy('ucb1')}
+          onClick={() => handleClickPolicy('ucb1')}
         >
           <legend className="name">UCB1</legend>
           <p>

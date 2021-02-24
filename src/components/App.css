@@ -106,17 +106,17 @@ label {
   width: 200px;
 }
 
-.strategies-label {
+.policies-label {
   margin: 8px;
 }
 
-.strategies-container {
+.policies-container {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   margin: 0;
 }
 
-.strategy {
+.policy {
   align-items: center;
   background-color: #eee;
   border-radius: 5px;
@@ -129,21 +129,21 @@ label {
   text-align: center;
 }
 
-.strategy:hover {
+.policy:hover {
   border: 1px solid #07c;
 }
 
-.strategy.active {
+.policy.active {
   background-color: #fff;
   border: 1px solid #07c;
 }
 
-.strategy-settings {
+.policy-settings {
   display: grid;
   grid-row-gap: 16px;
 }
 
-.strategy > .name {
+.policy > .name {
   font-weight: 600;
 }
 
