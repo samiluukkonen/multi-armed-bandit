@@ -11,15 +11,15 @@ import {
 } from '../agent'
 import { createEnvironment } from '../environment'
 import './App.css'
-import DecayInput from './DecayInput'
-import DecayIntervalInput from './DecayIntervalInput'
-import EpsilonInput from './EpsilonInput'
-import EpsilonFirstInput from './EpsilonFirstInput'
-import IterationsInput from './IterationsInput'
-import ProbabilityInput from './ProbabilityInput'
-import RewardInput from './RewardInput'
+import DecayInput from './inputs/DecayInput'
+import DecayIntervalInput from './inputs/DecayIntervalInput'
+import EpsilonInput from './inputs/EpsilonInput'
+import EpsilonFirstInput from './inputs/EpsilonFirstInput'
+import IterationsInput from './inputs/IterationsInput'
+import ProbabilityInput from './inputs/ProbabilityInput'
+import RewardInput from './inputs/RewardInput'
 import Summary from './Summary'
-import TauInput from './TauInput'
+import TauInput from './inputs/TauInput'
 
 const NR_ARMS = 5
 
