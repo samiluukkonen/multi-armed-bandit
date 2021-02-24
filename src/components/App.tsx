@@ -6,6 +6,7 @@ import {
   createEpsilonGreedyAgent,
   createRandomAgent,
   createSoftmaxAgent,
+  createThompsonSamplingAgent,
   createUCB1Agent,
   PolicyType,
 } from '../agent'
@@ -87,6 +88,8 @@ const App: React.FC = () => {
         return createRandomAgent({ environment, iterations })
       case 'softmax':
         return createSoftmaxAgent({ environment, iterations, tau })
+      case 'thompson-sampling':
+        return createThompsonSamplingAgent({ environment, iterations })
       case 'ucb1':
         return createUCB1Agent({ environment, iterations })
       default:
@@ -202,6 +205,7 @@ const App: React.FC = () => {
   const isRandom = policy === 'random'
   const isSoftmax = policy === 'softmax'
   const isUCB1 = policy === 'ucb1'
+  const isThompsonSampling = policy === 'thompson-sampling'
 
   return (
     <div className="content">
@@ -355,6 +359,23 @@ const App: React.FC = () => {
             taken but shrinks with the number of times we have tried this
             particular action. This ensures each action is tried infinitely
             often but still balances exploration and exploitation.
+          </p>
+        </fieldset>
+        <fieldset
+          className={classNames('policy thompson-sampling', {
+            active: isThompsonSampling,
+          })}
+          onClick={() => handleClickPolicy('thompson-sampling')}
+        >
+          <legend className="name">Thompson Sampling</legend>
+          <p>
+            Thompson Sampling is also known as probability matching policy, or
+            Bayesian Bandit.
+          </p>
+          <p>
+            Probability matching policies reflect the idea that the number of
+            actions taken for a given action should match its actual probability
+            of being the optimal action.
           </p>
         </fieldset>
       </div>

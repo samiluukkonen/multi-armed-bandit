@@ -1,3 +1,4 @@
+import jstat from 'jstat'
 import { argMax, initArray, randomChoice, sum } from './utils'
 
 export type PolicyType =
@@ -6,6 +7,7 @@ export type PolicyType =
   | 'epsilon-greedy'
   | 'random'
   | 'softmax'
+  | 'thompson-sampling'
   | 'ucb1'
 
 interface BaseAgentProps {
@@ -275,7 +277,7 @@ export const createUCB1Agent = ({
     }
 
     for (let i = 1; i <= iterations; i++) {
-      const items: number[] = Array.from({ length: environment.nArms })
+      const samples: number[] = Array.from({ length: environment.nArms })
         .fill(0)
         .map(
           (_, index: number): number =>
@@ -283,7 +285,7 @@ export const createUCB1Agent = ({
             Math.sqrt((2 * Math.log(i)) / (1 + arm.counts[index]))
         )
 
-      const chosenArm = argMax(items)
+      const chosenArm = argMax(samples)
       const reward = environment.reward(chosenArm)
 
       arm.rewards[chosenArm] += reward
@@ -299,5 +301,50 @@ export const createUCB1Agent = ({
     }
 
     return { arm, armOrder, qValues, rewards, condifenceIntervals }
+  },
+})
+
+export const createThompsonSamplingAgent = ({
+  environment,
+  iterations,
+}: BaseAgentProps): BaseAgentProps & Agent => ({
+  environment,
+  iterations,
+  act: (): LearningSummary => {
+    const { arm, armOrder, qValues, rewards } = initializeLearningSummary(
+      environment.nArms
+    )
+
+    const success: number[] = Array.from({ length: environment.nArms }).map(
+      () => 1
+    )
+    const trials: number[] = Array.from({ length: environment.nArms }).map(
+      () => 1
+    )
+
+    for (let i = 1; i <= iterations; i++) {
+      const samples: number[] = Array.from({ length: environment.nArms })
+        .fill(0)
+        .map((_, index: number): number =>
+          jstat.beta.sample(success[index], trials[index])
+        )
+
+      const chosenArm = argMax(samples)
+      const reward = environment.reward(chosenArm)
+
+      success[chosenArm] += reward
+      trials[chosenArm] += reward ? 0 : 1
+
+      arm.rewards[chosenArm] += reward
+      arm.counts[chosenArm] += 1
+
+      qValues[chosenArm] =
+        success[chosenArm] / (success[chosenArm] + trials[chosenArm])
+
+      armOrder.push(chosenArm)
+      rewards.push(reward)
+    }
+
+    return { arm, armOrder, qValues, rewards }
   },
 })

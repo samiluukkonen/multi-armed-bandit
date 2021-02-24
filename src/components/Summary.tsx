@@ -27,13 +27,14 @@ const Summary: FC<SummaryProps> = ({ summary }) => {
       <div className="summary-epsilon">
         {summary.epsilons && epsilonLine(summary.epsilons)}
       </div>
-      <div className="summary-confidence-intervals">
-        <span className="summary-confidence-intervals-title">
-          Confidence interval
-        </span>
-        {summary.condifenceIntervals &&
-          confidenceIntervalStream(summary.condifenceIntervals)}
-      </div>
+      {summary.condifenceIntervals && (
+        <div className="summary-confidence-intervals">
+          <span className="summary-confidence-intervals-title">
+            Confidence interval
+          </span>
+          {confidenceIntervalStream(summary.condifenceIntervals)}
+        </div>
+      )}
     </>
   )
 }

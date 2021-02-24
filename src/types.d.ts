@@ -1,3 +1,5 @@
+declare module 'jstat'
+
 type RewardProbabilities = number[]
 type Rewards = number[]
 
