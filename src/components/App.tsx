@@ -22,7 +22,7 @@ import RewardInput from './inputs/RewardInput'
 import Summary from './Summary'
 // import TauInput from './inputs/TauInput'
 
-const NR_ARMS = 3
+const NR_ARMS = 5
 
 const App: React.FC = () => {
   const [decay, setDecay] = useState<number>(0.0)
