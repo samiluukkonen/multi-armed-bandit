@@ -24,7 +24,7 @@ const Summary: FC<SummaryProps> = ({ summary }) => {
       </div>
       <div className="summary-order">
         <span className="summary-order-title">
-          The order where amrs were chosen
+          The order where arms were chosen
           <ul className="summary-order-explanation">
             <li className="empty">Triggered with no reward</li>
             <li className="full">Triggered with reward</li>
