@@ -277,7 +277,7 @@ export const createUCB1Agent = ({
     }
 
     for (let i = 1; i <= iterations; i++) {
-      const samples: number[] = Array.from({ length: environment.nArms })
+      const items: number[] = Array.from({ length: environment.nArms })
         .fill(0)
         .map(
           (_, index: number): number =>
@@ -285,7 +285,7 @@ export const createUCB1Agent = ({
             Math.sqrt((2 * Math.log(i)) / (1 + arm.counts[index]))
         )
 
-      const chosenArm = argMax(samples)
+      const chosenArm = argMax(items)
       const reward = environment.reward(chosenArm)
 
       arm.rewards[chosenArm] += reward
