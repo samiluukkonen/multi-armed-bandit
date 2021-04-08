@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "s": "yarn start",
-    "build": "run-s lint clean parcel:build",
+    "build": "run-s clean parcel:build",
     "parcel:build": "parcel build --experimental-scope-hoisting ./public/index.html",
     "start": "parcel serve --port 3000 ./public/index.html",
     "clean": "rm -rf ./dist",
@@ -31,9 +31,12 @@
   },
   "devDependencies": {
     "@types/classnames": "^2.2.11",
+    "@types/d3-color": "^2.0.1",
+    "@types/d3-scale-chromatic": "^2.0.0",
     "@types/node": "^14.14.16",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
+    "@types/react-motion": "^0.0.29",
     "@typescript-eslint/eslint-plugin": "^4.11.0",
     "@typescript-eslint/parser": "^4.11.0",
     "eslint": "^7.16.0",
