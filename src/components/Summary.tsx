@@ -1,4 +1,5 @@
 import React, { FC } from 'react'
+import classNames from 'classnames'
 import { sum } from '../utils'
 import { confidenceIntervalStream } from './graphs/confidence-interval-stream'
 import { countBar } from './graphs/count-bar'
@@ -22,10 +23,26 @@ const Summary: FC<SummaryProps> = ({ summary }) => {
         </div>
       </div>
       <div className="summary-order">
+        <span className="summary-order-title">
+          The order where amrs were chosen
+          <ul className="summary-order-explanation">
+            <li className="empty">Triggered with no reward</li>
+            <li className="full">Triggered with reward</li>
+          </ul>
+        </span>
         {countScatterPlot(summary.arm, summary.armOrder, summary.rewards)}
       </div>
-      <div className="summary-epsilon">
-        {summary.epsilons && epsilonLine(summary.epsilons)}
+      <div
+        className={classNames('summary-epsilon', {
+          hidden: !summary.epsilons,
+        })}
+      >
+        {summary.epsilons && (
+          <>
+            <span className="summary-epsilon-title">Epsilon decay</span>
+            {epsilonLine(summary.epsilons)}
+          </>
+        )}
       </div>
       {summary.condifenceIntervals && (
         <div className="summary-confidence-intervals">

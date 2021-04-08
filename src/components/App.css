@@ -149,11 +149,14 @@ label {
 
 .summary-count {
   align-items: center;
+  border-radius: 3px;
+  border: 1px solid #ccc;
   display: flex;
   flex-direction: column;
+  height: 400px;
   justify-content: center;
   margin: 24px 0 0 0;
-  height: 400px;
+  padding: 16px;
   width: 600px;
 }
 
@@ -163,31 +166,56 @@ label {
 
 .summary-order {
   align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 3px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  margin: 24px 0 0 0;
   height: 400px;
+  justify-content: center;
+  margin: 24px 0;
+  padding: 16px;
   width: 90%;
+}
+
+.summary-order-title {
+  margin: 0;
+}
+
+li.empty {
+  list-style-type: circle;
+}
+
+li.full {
 }
 
 .summary-epsilon {
   align-items: center;
+  border-radius: 3px;
+  border: 1px solid #ccc;
   display: flex;
   flex-direction: column;
+  height: 400px;
   justify-content: center;
   margin: 24px 0 0 0;
-  width: 100%;
+  padding: 16px;
+  width: 90%;
+}
+
+.summary-epsilon.hidden {
+  display: none;
 }
 
 .summary-confidence-intervals {
   align-items: center;
+  border-radius: 3px;
+  border: 1px solid #ccc;
   display: flex;
   flex-direction: column;
+  height: 400px;
   justify-content: center;
   margin: 24px 0 0 0;
-  height: 400px;
-  width: 100%;
+  padding: 16px;
+  width: 90%;
 }
 
 .learn {
