@@ -5,7 +5,7 @@ import {
   createEpsilonFirstAgent,
   createEpsilonGreedyAgent,
   createRandomAgent,
-  createSoftmaxAgent,
+  // createSoftmaxAgent,
   createThompsonSamplingAgent,
   createUCB1Agent,
   PolicyType,
@@ -20,9 +20,9 @@ import IterationsInput from './inputs/IterationsInput'
 import ProbabilityInput from './inputs/ProbabilityInput'
 import RewardInput from './inputs/RewardInput'
 import Summary from './Summary'
-import TauInput from './inputs/TauInput'
+// import TauInput from './inputs/TauInput'
 
-const NR_ARMS = 5
+const NR_ARMS = 3
 
 const App: React.FC = () => {
   const [decay, setDecay] = useState<number>(0.0)
@@ -39,7 +39,7 @@ const App: React.FC = () => {
   const [rewards, setRewards] = useState<number[]>(
     Array.from({ length: NR_ARMS }, (_, n): number => n)
   )
-  const [tau, setTau] = useState<number>(0.1)
+  // const [tau, setTau] = useState<number>(0.1)
   const [policy, setPolicy] = useState<PolicyType>('epsilon-greedy')
   const [summary, setSummary] = useState<LearningSummary>()
 
@@ -86,8 +86,8 @@ const App: React.FC = () => {
         })
       case 'random':
         return createRandomAgent({ environment, iterations })
-      case 'softmax':
-        return createSoftmaxAgent({ environment, iterations, tau })
+      // case 'softmax':
+      //   return createSoftmaxAgent({ environment, iterations, tau })
       case 'thompson-sampling':
         return createThompsonSamplingAgent({ environment, iterations })
       case 'ucb1':
@@ -192,18 +192,18 @@ const App: React.FC = () => {
     setPolicy(policyType)
   }, [])
 
-  const handleChangeTau = useCallback(
-    (event: ChangeEvent<HTMLInputElement>): void => {
-      setTau(Number(event.target.value))
-    },
-    []
-  )
+  // const handleChangeTau = useCallback(
+  //   (event: ChangeEvent<HTMLInputElement>): void => {
+  //     setTau(Number(event.target.value))
+  //   },
+  //   []
+  // )
 
   const isEpsilonDecreasing = policy === 'epsilon-decreasing'
   const isEpsilonFirst = policy === 'epsilon-first'
   const isEpsilonGreedy = policy === 'epsilon-greedy'
   const isRandom = policy === 'random'
-  const isSoftmax = policy === 'softmax'
+  // const isSoftmax = policy === 'softmax'
   const isUCB1 = policy === 'ucb1'
   const isThompsonSampling = policy === 'thompson-sampling'
 
@@ -328,7 +328,7 @@ const App: React.FC = () => {
             behaviour at the finish.
           </p>
         </fieldset>
-        <fieldset
+        {/* <fieldset
           className={classNames('policy softmax', {
             active: isSoftmax,
           })}
@@ -342,7 +342,7 @@ const App: React.FC = () => {
               value={tau}
             />
           </div>
-        </fieldset>
+        </fieldset> */}
         <fieldset
           className={classNames('policy ucb1', {
             active: isUCB1,
