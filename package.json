@@ -6,7 +6,7 @@
   "scripts": {
     "s": "yarn start",
     "build": "run-s clean parcel:build",
-    "parcel:build": "parcel build ./public/index.html --public-url='./'",
+    "parcel:build": "parcel build ./public/index.html --public-url='./' --no-source-maps",
     "start": "parcel serve --port 3000 ./public/index.html",
     "clean": "rm -rf ./dist",
     "lint": "run-s lint:*",
